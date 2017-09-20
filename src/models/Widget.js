@@ -1,10 +1,9 @@
-var Finish = require('./Finish.js');
+var Product = require('./Product.js');
 
 function Widget(id, Size, Finish, name) {
-  this.id = id;
+  Product.call(this, id, name);
   this.Size = Size;
   this.Finish = Finish;
-  this.name = name;
 }
 
 function whatDoIDo() {
