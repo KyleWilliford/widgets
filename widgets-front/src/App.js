@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import WidgetComponent from './WidgetComponent.js';
+import WidgetComponent from './components/WidgetComponent.js';
 import './App.css';
 
-class App extends Component {
+export default class App extends Component {
   state = {users: [], widgets: []}
 
   componentDidMount() {
@@ -35,5 +35,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;
