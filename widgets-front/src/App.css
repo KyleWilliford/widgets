@@ -8,9 +8,3 @@
   padding: 20px;
   color: white;
 }
-
-table.widget-table, th, td {
-  margin-left: auto; 
-  margin-right: auto;
-  border: 1px solid black;
-}
