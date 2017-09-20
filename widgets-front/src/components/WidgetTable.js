@@ -1,7 +1,7 @@
 import React from 'react';
-import '../styles/Widget.css';
+import '../styles/WidgetTable.css';
 
-export default class WidgetComponent extends React.Component {
+export default class WidgetTable extends React.Component {
   constructor() {
     super()
     this.state = { widgets: [] };
@@ -16,10 +16,10 @@ export default class WidgetComponent extends React.Component {
   render() {
     const { widgets }  = this.state;
     return (
-      <div>
+      <div className="component-pad">
         <h1>All Widgets</h1>
         <div>
-          <table className="widget-table">
+          <table id="widget-table">
             <tbody>
               <tr><td>Name</td><td>Size</td><td>Finish</td></tr>
               { widgets.map(widget =>

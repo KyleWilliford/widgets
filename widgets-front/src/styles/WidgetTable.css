@@ -1,0 +1,8 @@
+#widget-table, th, td {
+  margin-right: auto;
+  border: 1px solid black;
+}
+
+.component-pad {
+  padding: 2%;
+}

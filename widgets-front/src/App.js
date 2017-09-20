@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import WidgetComponent from './components/WidgetComponent.js';
+import WidgetTable from './components/WidgetTable.js';
+import OrderList from './components/OrderList.js';
 import './App.css';
 
 export default class App extends Component {
@@ -11,9 +12,12 @@ export default class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          <h2>Welcome to the Widget store</h2>
+          <h2>Welcome to the "Uber of Widgets" Widget store</h2>
+          <h3>Buy something or get out</h3>
+          <h4>The only currency we accept is acorns</h4>
         </div>
-        <WidgetComponent />
+        <OrderList />
+        <WidgetTable />
       </div>
     );
   }
