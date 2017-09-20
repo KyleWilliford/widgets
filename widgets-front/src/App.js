@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import WidgetComponent from './Widget.js';
+import WidgetComponent from './WidgetComponent.js';
 import './App.css';
 
 class App extends Component {
@@ -28,7 +28,7 @@ class App extends Component {
         <table className="widget-table"><tbody>
         <tr><td>Name</td><td>Size</td><td>Finish</td></tr>
         {this.state.widgets.map(widget =>
-          <WidgetComponent key={widget.id} size={widget.size} Finish={widget.Finish} name={widget.name} />
+          <WidgetComponent key={widget.id} Size={widget.Size} Finish={widget.Finish} name={widget.name} />
         )}
         </tbody></table>
       </div>
