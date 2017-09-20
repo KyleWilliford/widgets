@@ -7,4 +7,8 @@ function Widget(id, Size, Finish, name) {
   this.name = name;
 }
 
+function whatDoIDo() {
+  // nothing perceptible
+}
+
 module.exports = Widget;

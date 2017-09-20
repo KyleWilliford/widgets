@@ -11,7 +11,6 @@ router.get('/', function(req, res, next) {
   orders.push(order2);
   console.log(orders);
   res.send(orders);
-  if (next) next();
 });
 
 module.exports = router;
