@@ -13,11 +13,13 @@ export default class App extends Component {
       <div className="App">
         <div className="App-header">
           <h2>Welcome to the "Uber of Widgets" Widget store</h2>
-          <h3>Buy something or get out</h3>
-          <h4>The only currency we accept is acorns</h4>
         </div>
-        <OrderList />
-        <WidgetTable />
+        <div id="orderList">
+          <OrderList />
+        </div>
+        <div id="widgetTable">
+          <WidgetTable />
+        </div>
       </div>
     );
   }
