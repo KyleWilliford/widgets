@@ -119,4 +119,7 @@ INSERT INTO customer_order (status) VALUES ('Pending');
 INSERT INTO order_inventory (order_id, inventory_id, quantity) VALUES (1, 1, 1);
 INSERT INTO order_inventory (order_id, inventory_id, quantity) VALUES (1, 2, 2);
 INSERT INTO order_inventory (order_id, inventory_id, quantity) VALUES (1, 3, 4);
+INSERT INTO customer_order (status) VALUES ('Pending');
+INSERT INTO order_inventory (order_id, inventory_id, quantity) VALUES (2, 10, 2);
+INSERT INTO order_inventory (order_id, inventory_id, quantity) VALUES (2, 11, 5);
 # End of populating the database

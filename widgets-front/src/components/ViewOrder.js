@@ -13,7 +13,7 @@ export default class ViewOrder extends React.Component {
 
   render() {
     return (
-      <button value={this.props.orderId} onClick={this.showOrder}>Order with id {this.props.orderId} placed at {this.props.orderDate}</button>
+      <button className="component-pad" value={this.props.orderId} onClick={this.showOrder}>Order with id {this.props.orderId} placed at {this.props.orderDate}</button>
     );
   }
 }
