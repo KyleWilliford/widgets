@@ -1,4 +1,7 @@
 import React from 'react';
+import ViewOrder from './ViewOrder.js';
+import DeleteOrder from './DeleteOrder.js';
+import UpdateOrder from './UpdateOrder.js';
 
 export default class OrderList extends React.Component {
   constructor() {
@@ -33,7 +36,11 @@ export default class OrderList extends React.Component {
         <div>
           <ul>
             { orders.map(order =>
-              <li key={order.id}><button value={order.id} onClick={this.showOrder}>Order with id {order.id} placed at {order.orderDate}</button></li>
+              <li key={order.id}>
+                <ViewOrder orderId={order.id} orderDate={order.orderDate} />
+                <UpdateOrder orderId={order.id} />
+                <DeleteOrder orderId={order.id} />
+              </li>
             ) }
           </ul>
         </div>
