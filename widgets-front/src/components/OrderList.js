@@ -29,7 +29,6 @@ export default class OrderList extends React.Component {
 
   render() {
     const { orders } = this.state;
-    console.log(orders);
     return (
       <div className="component-pad">
         <h1>All Orders</h1>

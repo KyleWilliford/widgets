@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/inventory/widgets', widgetInventoryDAO.getAllWidgets);
+app.use('/widgets', widgetInventoryDAO.getAllWidgets);
 app.use('/orders', ordersDAO.getAllOrders);
 
 // catch 404 and forward to error handler

@@ -8,7 +8,7 @@ export default class WidgetTable extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/inventory/widgets')
+    fetch('/widgets')
       .then(res => res.json())
       .then(widgets => this.setState({ widgets }));
   }

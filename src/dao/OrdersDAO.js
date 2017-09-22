@@ -20,10 +20,11 @@ function getAllOrders(req, res, next) {
     connection.query(
       `SELECT
         o.id AS orderId,
-        o.status AS orderStatus,
+        s.name AS orderStatus,
         o.date_created AS orderDate,
         o.date_updated AS orderUpdated
       FROM customer_order o
+      INNER JOIN order_status_enum s ON o.order_status_id = s.id
       ORDER BY orderId DESC;`,
       function (error, results, fields) {
       if (error) throw error;
@@ -36,17 +37,17 @@ function getAllOrders(req, res, next) {
       connection.query(
       `SELECT
         oi.order_id AS orderId,
-        oi.quantity,
         p.id AS productId,
         p.name AS productName,
+        t.name AS typeName,
         f.id AS finishId,
         f.name AS finishName,
         f.hex_code AS finishHexCode,
         s.id AS sizeId,
         s.name AS sizeName
       FROM order_inventory oi
-      INNER JOIN inventory i ON oi.inventory_id = i.id
-      INNER JOIN product p ON i.product_id = p.id
+      INNER JOIN product p ON oi.product_id = p.id
+      INNER JOIN product_type_enum t ON p.product_type_id = t.id
       INNER JOIN finish f ON p.finish_id = f.id
       INNER JOIN size s ON p.size_id = s.id
       ORDER BY orderId DESC;`,
