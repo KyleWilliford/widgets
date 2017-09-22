@@ -1,7 +1,7 @@
 var Product = require('./Product.js');
 
-function Widget(id, Size, Finish, name, stock) {
-  Product.call(this, id, name, stock);
+function Widget(id, Size, Finish, name) {
+  Product.call(this, id, name);
   this.Size = Size;
   this.Finish = Finish;
 }

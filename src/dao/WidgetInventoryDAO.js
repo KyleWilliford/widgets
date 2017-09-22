@@ -20,17 +20,17 @@ function getAllWidgets(req, res, next) {
       `SELECT
         p.id AS productId,
         p.name AS productName,
+        t.name AS typeName,
         s.id AS sizeId,
         s.name AS sizeName,
         f.id AS finishId,
         f.name AS finishName,
-        i.stock,
         f.hex_code AS finishHexCode
-      FROM inventory i
-      INNER JOIN product p ON i.product_id = p.id
+      FROM product p
+      INNER JOIN product_type_enum t ON p.product_type_id = t.id
       INNER JOIN finish f ON p.finish_id = f.id
       INNER JOIN size s ON p.size_id = s.id
-      ORDER BY stock DESC;`,
+      ORDER BY productId ASC;`,
       function (error, results, fields) {
       if (error) throw error;
       let widgets = [];
@@ -41,7 +41,7 @@ function getAllWidgets(req, res, next) {
         console.log(size);
         const finish = new Finish(result.finishId, result.finishName, result.finishHexCode);
         console.log(finish);
-        const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName, result.stock);
+        const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName, result.typeName);
         console.log(widget);
         if (widget) widgets.push(widget);
       });
