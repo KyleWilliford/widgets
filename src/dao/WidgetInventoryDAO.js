@@ -1,23 +1,20 @@
-var express = require('express');
-var router = express.Router();
-var Size = require('../src/models/Size.js');
-var Finish = require('../src/models/Finish.js');
-var Widget = require('../src/models/Widget.js');
-var WidgetExtremeEdition = require('../src/models/WidgetExtremeEdition.js');
-var WidgetPrime = require('../src/models/WidgetPrime.js');
-var WidgetElite = require('../src/models/WidgetElite.js');
-var WidgetFactory = require('../src/factories/WidgetFactory.js');
+var Size = require('../model/Size.js');
+var Finish = require('../model/Finish.js');
+var Widget = require('../model/Widget.js');
+var WidgetExtremeEdition = require('../model/WidgetExtremeEdition.js');
+var WidgetPrime = require('../model/WidgetPrime.js');
+var WidgetElite = require('../model/WidgetElite.js');
+var WidgetFactory = require('../factory/WidgetFactory.js');
+var config = require('../config/DatabaseConfiguration');
 var mysql = require('mysql');
-var SqlString = require('sqlstring');
 
-/* GET widgets */
-router.get('/', function(req, res, next) {
+function getAllWidgets(req, res, next) {
   try {
     var connection = mysql.createConnection({
-      host     : 'localhost',
-      user     : 'appuser',
-      password : 'gumshoetoadstool',
-      database : 'widgets'
+      host     : config.host,
+      user     : config.user,
+      password : config.password,
+      database : config.database
     });
     connection.query(
       `SELECT
@@ -30,9 +27,9 @@ router.get('/', function(req, res, next) {
         i.stock,
         f.hex_code AS finishHexCode
       FROM inventory i
-      INNER JOIN products p ON i.product_id = p.id
-      INNER JOIN finishes f ON p.finish_id = f.id
-      INNER JOIN sizes s ON p.size_id = s.id
+      INNER JOIN product p ON i.product_id = p.id
+      INNER JOIN finish f ON p.finish_id = f.id
+      INNER JOIN size s ON p.size_id = s.id
       ORDER BY stock DESC;`,
       function (error, results, fields) {
       if (error) throw error;
@@ -54,6 +51,8 @@ router.get('/', function(req, res, next) {
     console.log(error);
     next(error);
   }
-});
+}
 
-module.exports = router;
+module.exports = {
+  getAllWidgets: getAllWidgets
+};
