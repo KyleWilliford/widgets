@@ -1,7 +1,7 @@
 var Widget = require('./Widget.js');
 
-function WidgetPrime(id, Size, Finish, name) {
-  Widget.call(this, id, Size, Finish, name);
+function WidgetPrime(id, Size, Finish, name, stock) {
+  Widget.call(this, id, Size, Finish, name, stock);
 }
 
 module.exports = WidgetPrime;

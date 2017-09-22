@@ -21,9 +21,9 @@ export default class WidgetTable extends React.Component {
         <div>
           <table id="widget-table">
             <tbody>
-              <tr><td>Name</td><td>Size</td><td>Finish</td></tr>
+              <tr><td>Name</td><td>Size</td><td>Finish</td><td>Stock</td></tr>
               { widgets.map(widget =>
-                <tr key={widget.id}><td>{widget.name}</td><td>{widget.Size.name}</td><td>{widget.Finish.name}</td></tr>
+                <tr key={widget.id}><td>{widget.name}</td><td>{widget.Size.name}</td><td>{widget.Finish.name}</td><td>{widget.stock}</td></tr>
               ) }
             </tbody>
           </table>

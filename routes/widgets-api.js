@@ -27,11 +27,13 @@ router.get('/', function(req, res, next) {
         s.name AS sizeName,
         f.id AS finishId,
         f.name AS finishName,
+        i.stock,
         f.hex_code AS finishHexCode
-      FROM products p
-      JOIN finishes f ON p.finish_id = f.id
-      JOIN sizes s ON p.size_id = s.id
-      ORDER BY productId DESC;`,
+      FROM inventory i
+      INNER JOIN products p ON i.product_id = p.id
+      INNER JOIN finishes f ON p.finish_id = f.id
+      INNER JOIN sizes s ON p.size_id = s.id
+      ORDER BY stock DESC;`,
       function (error, results, fields) {
       if (error) throw error;
       let widgets = [];
@@ -42,7 +44,7 @@ router.get('/', function(req, res, next) {
         console.log(size);
         const finish = new Finish(result.finishId, result.finishName, result.finishHexCode);
         console.log(finish);
-        const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName);
+        const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName, result.stock);
         console.log(widget);
         if (widget) widgets.push(widget);
       });
