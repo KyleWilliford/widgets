@@ -5,13 +5,13 @@ var WidgetElite = require('../model/WidgetElite.js');
 
 function createWidget(id, Size, Finish, name, typeName) {
   if (typeName === 'Widget') {
-    return new Widget(id, Size, Finish, name);
+    return new Widget(id, Size, Finish, name, typeName);
   } else if (typeName === 'Widget Prime') {
-    return new WidgetPrime(id, Size, Finish, name);
+    return new WidgetPrime(id, Size, Finish, name, typeName);
   } else if (typeName === 'Widget Elite') {
-    return new WidgetElite(id, Size, Finish, name);
+    return new WidgetElite(id, Size, Finish, name, typeName);
   } else if (typeName === 'Widget EXTREME Edition') {
-    return new WidgetExtremeEdition(id, Size, Finish, name);
+    return new WidgetExtremeEdition(id, Size, Finish, name, typeName);
   }
 }
 
