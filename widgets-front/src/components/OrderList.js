@@ -8,6 +8,7 @@ export default class OrderList extends React.Component {
     super()
     this.state = { orders: [] };
     this.showOrder = this.showOrder.bind(this);
+    this.updateOrder = this.updateOrder.bind(this);
   }
 
   componentDidMount() {
@@ -27,6 +28,19 @@ export default class OrderList extends React.Component {
     });
   }
 
+  updateOrder(order) {
+    console.log(order);
+    fetch('/orders', {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(order)
+    })
+    .then(res => res.json())
+  }
+
   render() {
     const { orders } = this.state;
     return (
@@ -36,9 +50,9 @@ export default class OrderList extends React.Component {
           <ul>
             { orders.map(order =>
               <li key={order.id}>
-                <ViewOrder orderId={order.id} orderDate={order.orderDate} />
-                <UpdateOrder orderId={order.id} />
-                <DeleteOrder orderId={order.id} />
+                <ViewOrder orderId = {order.id} orderDate = {order.orderDate} />
+                <UpdateOrder updateOrder = {this.updateOrder} order = {order} orderId = {order.id} />
+                <DeleteOrder orderId = {order.id} />
               </li>
             ) }
           </ul>
