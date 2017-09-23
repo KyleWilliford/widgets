@@ -41,6 +41,19 @@ export default class OrderList extends React.Component {
     .then(res => res.json())
   }
 
+  deleteOrder(order) {
+    console.log(order);
+    fetch('/orders', {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(order)
+    })
+    .then(res => res.json())
+  }
+
   render() {
     const { orders } = this.state;
     return (
@@ -51,8 +64,8 @@ export default class OrderList extends React.Component {
             { orders.map(order =>
               <li key={order.id}>
                 <ViewOrder orderId = {order.id} orderDate = {order.orderDate} />
-                <UpdateOrder updateOrder = {this.updateOrder} order = {order} orderId = {order.id} />
-                <DeleteOrder orderId = {order.id} />
+                <UpdateOrder updateOrder = {this.updateOrder} order = {order} />
+                <DeleteOrder deleteOrder = {this.deleteOrder} order = {order} />
               </li>
             ) }
           </ul>
