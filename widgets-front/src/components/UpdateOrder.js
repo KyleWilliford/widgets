@@ -1,13 +1,9 @@
 import React from 'react';
 
 export default class UpdateOrder extends React.Component {
-  constructor() {
-    super()
-  }
-
   render() {
     return (
-      <button onClick={this.props.updateOrder.bind(this, this.props.order)}>Update Order</button>
+      <button className="button-margin" onClick={this.props.updateOrder.bind(this, this.props.order)}>Update Order</button>
     );
   }
 }

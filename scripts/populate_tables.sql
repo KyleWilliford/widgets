@@ -132,4 +132,18 @@ INSERT INTO order_inventory (order_id, product_id) VALUES (2, 10);
 INSERT INTO order_inventory (order_id, product_id) VALUES (2, 11);
 UPDATE product SET in_stock = false WHERE id = 10;
 UPDATE product SET in_stock = false WHERE id = 11;
+
+# Order 3
+INSERT INTO customer_order (order_status_id) VALUES (1);
+INSERT INTO order_inventory (order_id, product_id) VALUES (3, 14);
+INSERT INTO order_inventory (order_id, product_id) VALUES (3, 9);
+UPDATE product SET in_stock = false WHERE id = 14;
+UPDATE product SET in_stock = false WHERE id = 9;
+
+# Order 4
+INSERT INTO customer_order (order_status_id) VALUES (1);
+INSERT INTO order_inventory (order_id, product_id) VALUES (4, 16);
+INSERT INTO order_inventory (order_id, product_id) VALUES (4, 7);
+UPDATE product SET in_stock = false WHERE id = 16;
+UPDATE product SET in_stock = false WHERE id = 7;
 # End of populating the database

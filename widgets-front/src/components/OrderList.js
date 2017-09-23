@@ -1,13 +1,12 @@
 import React from 'react';
-import ViewOrder from './ViewOrder.js';
 import DeleteOrder from './DeleteOrder.js';
 import UpdateOrder from './UpdateOrder.js';
+import '../styles/OrderList.css';
 
 export default class OrderList extends React.Component {
   constructor() {
     super()
     this.state = { orders: [] };
-    this.showOrder = this.showOrder.bind(this);
     this.updateOrder = this.updateOrder.bind(this);
     this.deleteOrder = this.deleteOrder.bind(this);
   }
@@ -16,11 +15,6 @@ export default class OrderList extends React.Component {
     fetch('/orders')
       .then(res => res.json())
       .then(orders => this.setState({ orders }));
-  }
-
-  showOrder(e) {
-    e.preventDefault();
-    console.log(e.target.value);
   }
 
   updateOrder(order) {
@@ -33,11 +27,14 @@ export default class OrderList extends React.Component {
       },
       body: JSON.stringify(order)
     })
-    .then(res => res.json());
+    .then(response => {
+      fetch('/orders')
+        .then(res => res.json())
+        .then(orders => this.setState({ orders }))
+    });
   }
 
   deleteOrder(order) {
-    console.log(order);
     fetch('/orders', {
       method: 'DELETE',
       headers: {
@@ -46,10 +43,11 @@ export default class OrderList extends React.Component {
       },
       body: JSON.stringify(order)
     })
-    .then(res => res.json());
-    fetch('/orders')
-      .then(res => res.json())
-      .then(orders => this.setState({ orders }));
+    .then(response => {
+      fetch('/orders')
+        .then(res => res.json())
+        .then(orders => this.setState({ orders }))
+    });
   }
 
   render() {
@@ -59,13 +57,18 @@ export default class OrderList extends React.Component {
         <h1>All Orders</h1>
         <div>
           <ul>
-            { orders.map(order =>
+            {orders.map(order =>
               <li key={order.id}>
-                <ViewOrder orderId = {order.id} orderDate = {order.orderDate} />
+                <span>Order with id {order.id} placed at {order.orderDate}</span>
                 <UpdateOrder updateOrder = {this.updateOrder} order = {order} />
                 <DeleteOrder deleteOrder = {this.deleteOrder} order = {order} />
+                {order.products.map(product =>
+                  <div key={product.id}>
+                    <span>id: {product.id} name: {product.name}</span>
+                  </div>
+                )}
               </li>
-            ) }
+            )}
           </ul>
         </div>
       </div>
