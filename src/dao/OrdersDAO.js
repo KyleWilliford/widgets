@@ -1,5 +1,6 @@
 var Size = require('../model/Size.js');
 var Finish = require('../model/Finish.js');
+var WidgetType = require('../model/WidgetType.js');
 var Widget = require('../model/Widget.js');
 var WidgetExtremeEdition = require('../model/WidgetExtremeEdition.js');
 var WidgetPrime = require('../model/WidgetPrime.js');
@@ -49,6 +50,7 @@ function getAllOrders(req, res, next) {
       oi.order_id AS orderId,
       p.id AS productId,
       p.name AS productName,
+      t.name AS typeId,
       t.name AS typeName,
       f.id AS finishId,
       f.name AS finishName,
@@ -69,7 +71,9 @@ function getAllOrders(req, res, next) {
         console.log(size);
         const finish = new Finish(result.finishId, result.finishName, result.finishHexCode);
         console.log(finish);
-        const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName, result.typeName);
+        const type = new WidgetType(result.typeId, result.typeName);
+        console.log(type);
+        const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName, type);
         console.log(widget);
         orders.forEach(function(order) {
           if (order.id === result.orderId) {
