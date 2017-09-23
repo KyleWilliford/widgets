@@ -278,5 +278,6 @@ function createOrder(req, res, next) {
 
 module.exports = {
   getAllOrders: getAllOrders,
-  updateOrder: updateOrder
+  updateOrder: updateOrder,
+  createOrder: createOrder
 };

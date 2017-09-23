@@ -23,7 +23,7 @@ export default class WidgetTable extends React.Component {
             <tbody>
               <tr><td>Name</td><td>Type</td><td>Size</td><td>Finish</td></tr>
               { widgets.map(widget =>
-                <tr key={widget.id}><td>{widget.name}</td><td>{widget.typeName}</td><td>{widget.Size.name}</td><td>{widget.Finish.name}</td></tr>
+                <tr key={widget.id}><td>{widget.name}</td><td>{widget.type.name}</td><td>{widget.size.name}</td><td>{widget.finish.name}</td></tr>
               ) }
             </tbody>
           </table>

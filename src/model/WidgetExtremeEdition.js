@@ -1,7 +1,7 @@
 var Widget = require('./Widget.js');
 
-function WidgetExtremeEdition(id, Size, Finish, name, typeName) {
-  Widget.call(this, id, Size, Finish, name, typeName);
+function WidgetExtremeEdition(id, size, finish, name, type) {
+  Widget.call(this, id, size, finish, name, type);
 }
 
 module.exports = WidgetExtremeEdition;

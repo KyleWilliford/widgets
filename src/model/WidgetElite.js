@@ -1,7 +1,7 @@
 var Widget = require('./Widget.js');
 
-function WidgetElite(id, Size, Finish, name, typeName) {
-  Widget.call(this, id, Size, Finish, name, typeName);
+function WidgetElite(id, size, finish, name, type) {
+  Widget.call(this, id, size, finish, name, type);
 }
 
 module.exports = WidgetElite;

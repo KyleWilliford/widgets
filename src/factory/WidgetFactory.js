@@ -3,15 +3,15 @@ var WidgetExtremeEdition = require('../model/WidgetExtremeEdition.js');
 var WidgetPrime = require('../model/WidgetPrime.js');
 var WidgetElite = require('../model/WidgetElite.js');
 
-function createWidget(id, Size, Finish, name, typeName) {
-  if (typeName === 'Widget') {
-    return new Widget(id, Size, Finish, name, typeName);
-  } else if (typeName === 'Widget Prime') {
-    return new WidgetPrime(id, Size, Finish, name, typeName);
-  } else if (typeName === 'Widget Elite') {
-    return new WidgetElite(id, Size, Finish, name, typeName);
-  } else if (typeName === 'Widget EXTREME Edition') {
-    return new WidgetExtremeEdition(id, Size, Finish, name, typeName);
+function createWidget(id, size, finish, name, type) {
+  if (type.name === 'Widget') {
+    return new Widget(id, size, finish, name, type);
+  } else if (type.name === 'Widget Prime') {
+    return new WidgetPrime(id, size, finish, name, type);
+  } else if (type.name === 'Widget Elite') {
+    return new WidgetElite(id, size, finish, name, type);
+  } else if (type.name === 'Widget EXTREME Edition') {
+    return new WidgetExtremeEdition(id, size, finish, name, type);
   }
 }
 

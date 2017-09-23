@@ -1,5 +1,6 @@
 var Size = require('../model/Size.js');
 var Finish = require('../model/Finish.js');
+var WidgetType = require('../model/WidgetType.js');
 var Widget = require('../model/Widget.js');
 var WidgetExtremeEdition = require('../model/WidgetExtremeEdition.js');
 var WidgetPrime = require('../model/WidgetPrime.js');
@@ -25,6 +26,7 @@ function getAllWidgets(req, res, next) {
     `SELECT
       p.id AS productId,
       p.name AS productName,
+      t.id AS typeId,
       t.name AS typeName,
       s.id AS sizeId,
       s.name AS sizeName,
@@ -44,7 +46,9 @@ function getAllWidgets(req, res, next) {
         console.log(size);
         const finish = new Finish(result.finishId, result.finishName, result.finishHexCode);
         console.log(finish);
-        const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName, result.typeName);
+        const type = new WidgetType(result.typeId, result.typeName);
+        console.log(type);
+        const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName, type);
         console.log(widget);
         if (widget) widgets.push(widget);
       });
@@ -62,6 +66,40 @@ function getAllWidgets(req, res, next) {
     });
 }
 
+function createWidget(req, res, next) {
+  console.log(req.body);
+  var widget = req.body;
+  var connection = mysql.createConnection({
+    host     : config.host,
+    user     : config.user,
+    password : config.password,
+    database : config.database
+  });
+
+  function createWidget() {
+    var deferred = Q.defer();
+    connection.query('INSERT INTO product (name, product_type_id, finish_id, size_id) VALUES (' +
+      widget.name + ',' +
+      widget.type.id + ',' +
+      widget.finish.id + ',' +
+      widget.size.id + ');'
+      , function(error, results, fields) {
+      if (error) throw error;
+      deferred.resolve();
+    });
+    return deferred.promise;
+  }
+
+  Q.fcall(createWidget)
+    .catch(function (error) {
+      console.log(error);
+    })
+    .done(function() {
+      res.send(widget);
+    });
+}
+
 module.exports = {
-  getAllWidgets: getAllWidgets
+  getAllWidgets: getAllWidgets,
+  createWidget: createWidget
 };
