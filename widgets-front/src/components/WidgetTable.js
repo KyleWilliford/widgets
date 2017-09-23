@@ -5,9 +5,14 @@ export default class WidgetTable extends React.Component {
   constructor() {
     super()
     this.state = { widgets: [] };
+    this.update = this.update.bind(this);
   }
 
   componentDidMount() {
+    this.update();
+  }
+
+  update() {
     fetch('/widgets')
       .then(res => res.json())
       .then(widgets => this.setState({ widgets }));
@@ -21,9 +26,9 @@ export default class WidgetTable extends React.Component {
         <div>
           <table id="widget-table">
             <tbody>
-              <tr><td>Name</td><td>Type</td><td>Size</td><td>Finish</td></tr>
+              <tr><td>ID</td><td>Name</td><td>Type</td><td>Size</td><td>Finish</td><td>In Stock?</td></tr>
               { widgets.map(widget =>
-                <tr key={widget.id}><td>{widget.name}</td><td>{widget.type.name}</td><td>{widget.size.name}</td><td>{widget.finish.name}</td></tr>
+                <tr key={widget.id}><td>{widget.id}</td><td>{widget.name}</td><td>{widget.type.name}</td><td>{widget.size.name}</td><td>{widget.finish.name}</td><td>{widget.inStock ? 'Yes' : 'No'}</td></tr>
               ) }
             </tbody>
           </table>

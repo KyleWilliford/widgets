@@ -26,6 +26,7 @@ function getAllWidgets(req, res, next) {
     `SELECT
       p.id AS productId,
       p.name AS productName,
+      p.in_stock AS inStock,
       t.id AS typeId,
       t.name AS typeName,
       s.id AS sizeId,
@@ -48,7 +49,7 @@ function getAllWidgets(req, res, next) {
         console.log(finish);
         const type = new WidgetType(result.typeId, result.typeName);
         console.log(type);
-        const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName, type);
+        const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName, type, result.inStock);
         console.log(widget);
         if (widget) widgets.push(widget);
       });

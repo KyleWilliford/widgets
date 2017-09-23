@@ -31,6 +31,7 @@ export default class OrderList extends React.Component {
       fetch('/orders')
         .then(res => res.json())
         .then(orders => this.setState({ orders }))
+        .then(response => this.props.ordersChanged())
     });
   }
 
@@ -47,6 +48,7 @@ export default class OrderList extends React.Component {
       fetch('/orders')
         .then(res => res.json())
         .then(orders => this.setState({ orders }))
+        .then(response => this.props.ordersChanged())
     });
   }
 

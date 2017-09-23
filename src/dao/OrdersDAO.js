@@ -50,6 +50,7 @@ function getAllOrders(req, res, next) {
       oi.order_id AS orderId,
       p.id AS productId,
       p.name AS productName,
+      p.in_stock AS inStock,
       t.name AS typeId,
       t.name AS typeName,
       f.id AS finishId,
@@ -73,7 +74,7 @@ function getAllOrders(req, res, next) {
         console.log(finish);
         const type = new WidgetType(result.typeId, result.typeName);
         console.log(type);
-        const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName, type);
+        const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName, type, result.inStock);
         console.log(widget);
         orders.forEach(function(order) {
           if (order.id === result.orderId) {

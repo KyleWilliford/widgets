@@ -5,8 +5,16 @@ import CreateOrder from './components/CreateOrder.js';
 import './App.css';
 
 export default class App extends Component {
+  constructor() {
+    super()
+    this.ordersChanged = this.ordersChanged.bind(this);
+  }
 
   componentDidMount() {
+  }
+
+  ordersChanged() {
+    this.refs.widgetTable.update();
   }
 
   render() {
@@ -18,13 +26,13 @@ export default class App extends Component {
         </div>
         <div  className="pad-left">
           <div>
-            <OrderList />
+            <OrderList ordersChanged = {this.ordersChanged} />
           </div>
           <div>
             <CreateOrder />
           </div>
           <div id="widgetTable">
-            <WidgetTable />
+            <WidgetTable ref="widgetTable" />
           </div>
         </div>
       </div>
