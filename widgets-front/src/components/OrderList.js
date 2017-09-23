@@ -9,6 +9,7 @@ export default class OrderList extends React.Component {
     this.state = { orders: [] };
     this.showOrder = this.showOrder.bind(this);
     this.updateOrder = this.updateOrder.bind(this);
+    this.deleteOrder = this.deleteOrder.bind(this);
   }
 
   componentDidMount() {
@@ -20,12 +21,6 @@ export default class OrderList extends React.Component {
   showOrder(e) {
     e.preventDefault();
     console.log(e.target.value);
-    this.state.orders.forEach(function(order) {
-      if (parseInt(order.id, 10) === parseInt(e.target.value, 10))
-      order.products.forEach(function(product) {
-        console.log(product);
-      });
-    });
   }
 
   updateOrder(order) {
@@ -38,7 +33,7 @@ export default class OrderList extends React.Component {
       },
       body: JSON.stringify(order)
     })
-    .then(res => res.json())
+    .then(res => res.json());
   }
 
   deleteOrder(order) {
@@ -51,7 +46,10 @@ export default class OrderList extends React.Component {
       },
       body: JSON.stringify(order)
     })
-    .then(res => res.json())
+    .then(res => res.json());
+    fetch('/orders')
+      .then(res => res.json())
+      .then(orders => this.setState({ orders }));
   }
 
   render() {
