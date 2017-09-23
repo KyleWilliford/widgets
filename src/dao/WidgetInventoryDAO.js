@@ -7,33 +7,35 @@ var WidgetElite = require('../model/WidgetElite.js');
 var WidgetFactory = require('../factory/WidgetFactory.js');
 var config = require('../config/DatabaseConfiguration');
 var mysql = require('mysql');
+var SqlString = require('sqlstring');
+var Q = require('q');
 
 function getAllWidgets(req, res, next) {
-  try {
-    var connection = mysql.createConnection({
-      host     : config.host,
-      user     : config.user,
-      password : config.password,
-      database : config.database
-    });
+  var connection = mysql.createConnection({
+    host     : config.host,
+    user     : config.user,
+    password : config.password,
+    database : config.database
+  });
+
+  let widgets = [];
+  function getWidgets() {
+    var deferred = Q.defer();
     connection.query(
-      `SELECT
-        p.id AS productId,
-        p.name AS productName,
-        t.name AS typeName,
-        s.id AS sizeId,
-        s.name AS sizeName,
-        f.id AS finishId,
-        f.name AS finishName,
-        f.hex_code AS finishHexCode
-      FROM product p
-      INNER JOIN product_type_enum t ON p.product_type_id = t.id
-      INNER JOIN finish f ON p.finish_id = f.id
-      INNER JOIN size s ON p.size_id = s.id
-      ORDER BY productId ASC;`,
-      function (error, results, fields) {
-      if (error) throw error;
-      let widgets = [];
+    `SELECT
+      p.id AS productId,
+      p.name AS productName,
+      t.name AS typeName,
+      s.id AS sizeId,
+      s.name AS sizeName,
+      f.id AS finishId,
+      f.name AS finishName,
+      f.hex_code AS finishHexCode
+    FROM product p
+    INNER JOIN product_type_enum t ON p.product_type_id = t.id
+    INNER JOIN finish f ON p.finish_id = f.id
+    INNER JOIN size s ON p.size_id = s.id
+    ORDER BY productId ASC;`, function(error, results, fields) {
       console.log(results);
       results.forEach(function(result) {
         console.log(result);
@@ -45,12 +47,18 @@ function getAllWidgets(req, res, next) {
         console.log(widget);
         if (widget) widgets.push(widget);
       });
+      deferred.resolve();
+    });
+    return deferred.promise;
+  }
+
+  Q.fcall(getWidgets)
+    .catch(function (error) {
+      console.log(error);
+    })
+    .done(function() {
       res.send(widgets);
     });
-  } catch(error) {
-    console.log(error);
-    next(error);
-  }
 }
 
 module.exports = {

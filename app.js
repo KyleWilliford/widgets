@@ -4,7 +4,6 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
 var widgetInventoryDAO = require('./src/dao/WidgetInventoryDAO');
 var ordersDAO = require('./src/dao/OrdersDAO');
 
