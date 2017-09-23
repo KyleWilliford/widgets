@@ -122,9 +122,14 @@ INSERT INTO customer_order (order_status_id) VALUES (1);
 INSERT INTO order_inventory (order_id, product_id) VALUES (1, 1);
 INSERT INTO order_inventory (order_id, product_id) VALUES (1, 2);
 INSERT INTO order_inventory (order_id, product_id) VALUES (1, 3);
+UPDATE product SET in_stock = false WHERE id = 1;
+UPDATE product SET in_stock = false WHERE id = 2;
+UPDATE product SET in_stock = false WHERE id = 3;
 
 # Order 2
 INSERT INTO customer_order (order_status_id) VALUES (1);
 INSERT INTO order_inventory (order_id, product_id) VALUES (2, 10);
 INSERT INTO order_inventory (order_id, product_id) VALUES (2, 11);
+UPDATE product SET in_stock = false WHERE id = 10;
+UPDATE product SET in_stock = false WHERE id = 11;
 # End of populating the database
