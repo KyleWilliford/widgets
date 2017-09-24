@@ -6,3 +6,7 @@
 .margin-5px {
   margin: 5px;
 }
+
+form {
+  display: inline-block;
+}

@@ -13,10 +13,7 @@ export default class SearchWidgets extends React.Component {
   componentDidMount() {
     fetch('/supported-search-types')
       .then(res => res.json())
-      .then(searchTypes => { 
-        this.setState({ searchTypes, selectedSearchType: searchTypes[0] });
-        console.log(this.state);
-      });
+      .then(searchTypes => this.setState({ searchTypes, selectedSearchType: searchTypes[0] }));
   }
 
   selectedSearchTypeChange(event) {

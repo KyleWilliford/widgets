@@ -5,7 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var widgetInventoryDAO = require('./src/dao/WidgetInventoryDAO');
-var ordersDAO = require('./src/dao/OrdersDAO');
+var ordersDAO = require('./src/dao/OrderDAO');
+var enumDAO = require('./src/dao/EnumDAO');
 
 var app = express();
 
@@ -30,6 +31,9 @@ app.post('/orders', ordersDAO.createOrder);
 app.put('/orders', ordersDAO.updateOrder);
 app.delete('/orders', ordersDAO.deleteOrder);
 app.get('/supported-search-types', widgetInventoryDAO.getSupportedSearchTypes);
+app.get('/enums/types', enumDAO.getTypes);
+app.get('/enums/sizes', enumDAO.getSizes);
+app.get('/enums/finishes', enumDAO.getFinishes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

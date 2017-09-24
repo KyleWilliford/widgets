@@ -1,6 +1,7 @@
 import React from 'react';
 import DeleteOrder from './DeleteOrder.js';
 import UpdateOrder from './UpdateOrder.js';
+import CreateOrder from './CreateOrder.js';
 import '../styles/OrderList.css';
 
 export default class OrderList extends React.Component {

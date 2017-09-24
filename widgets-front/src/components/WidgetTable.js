@@ -1,6 +1,7 @@
 import React from 'react';
 import '../styles/WidgetTable.css';
 import SearchWidgets from './SearchWidgets.js';
+import CreateWidget from './CreateWidget.js';
 
 export default class WidgetTable extends React.Component {
   constructor() {
@@ -8,6 +9,7 @@ export default class WidgetTable extends React.Component {
     this.state = { widgets: [] };
     this.update = this.update.bind(this);
     this.search = this.search.bind(this);
+    this.newWidget = this.newWidget.bind(this);
   }
 
   componentDidMount() {
@@ -35,11 +37,29 @@ export default class WidgetTable extends React.Component {
     .then(widgets => this.setState({ widgets }));
   }
 
+  newWidget(widget) {
+    console.log(widget);
+    fetch('/widgets', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(widget)
+    })
+    .then(response => this.update());
+  }
+
   render() {
-    const { widgets }  = this.state;
+    const { widgets } = this.state;
     return (
       <div className="component-pad">
         <h1>Product Inventory</h1>
+        <div>
+          <CreateWidget newWidget = {this.newWidget} />
+        </div>
+        <br></br>
+        <h4>Products Listing</h4>
         <SearchWidgets ref="searchWidget" search = {this.search} />
         <div>
           {widgets.length === 0 ? (

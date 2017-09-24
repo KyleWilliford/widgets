@@ -38,7 +38,7 @@ function getAllWidgets(req, res, next) {
     INNER JOIN product_type_enum t ON p.product_type_id = t.id
     INNER JOIN finish f ON p.finish_id = f.id
     INNER JOIN size s ON p.size_id = s.id
-    ORDER BY productId ASC;`, function(error, results, fields) {
+    ORDER BY productId DESC;`, function(error, results, fields) {
       if (error) throw error;
       console.log(results);
       results.forEach(function(result) {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import WidgetTable from './components/WidgetTable.js';
 import OrderList from './components/OrderList.js';
-import CreateOrder from './components/CreateOrder.js';
 import './App.css';
 
 export default class App extends Component {
@@ -27,9 +26,6 @@ export default class App extends Component {
         <div  className="pad-left">
           <div>
             <OrderList ordersChanged = {this.ordersChanged} />
-          </div>
-          <div>
-            <CreateOrder />
           </div>
           <div id="widgetTable">
             <WidgetTable ref="widgetTable" />

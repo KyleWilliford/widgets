@@ -58,8 +58,7 @@ CREATE TABLE product (
     ON DELETE CASCADE,
   FOREIGN KEY (size_id)
     REFERENCES size(id)
-    ON DELETE CASCADE,
-  UNIQUE KEY unique_product (name, finish_id, size_id)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE order_inventory (
