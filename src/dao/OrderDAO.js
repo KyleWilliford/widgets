@@ -342,9 +342,53 @@ function deleteOrder(req, res, next) {
     });
 }
 
+function deleteProductFromOrder(req, res, next) {
+  var orderId = SqlString.escape(req.body.orderId);
+  console.log(orderId);
+  var productId = SqlString.escape(req.body.productId);
+  console.log(productId);
+  var connection = mysql.createConnection({
+    host     : config.host,
+    user     : config.user,
+    password : config.password,
+    database : config.database
+  });
+
+  function deleteOrderInventory() {
+    var deferred = Q.defer();
+    connection.query('DELETE FROM order_inventory WHERE order_id = ' + orderId + ' AND product_id = ' + productId + ';'
+      , function(error, results, fields) {
+      if (error) throw error;
+      deferred.resolve();
+    });
+    return deferred.promise;
+  }
+
+  function resetStock() {
+    var deferred = Q.defer();
+    connection.query('UPDATE product SET in_stock = true WHERE id = ' + productId + ';'
+      , function(error, results, fields) {
+      if (error) throw error;
+      deferred.resolve();
+    });
+    return deferred.promise;
+  }
+
+  Q.fcall(deleteOrderInventory)
+    .then(resetStock)
+    .catch(function(error) {
+      console.log(error);
+      res.status(400).send(error);
+    })
+    .done(function() {
+      if(!res.headersSent) res.send(true);
+    });
+}
+
 module.exports = {
   getAllOrders: getAllOrders,
   updateOrder: updateOrder,
   createOrder: createOrder,
-  deleteOrder: deleteOrder
+  deleteOrder: deleteOrder,
+  deleteProductFromOrder: deleteProductFromOrder
 };

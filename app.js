@@ -30,6 +30,7 @@ app.get('/orders', ordersDAO.getAllOrders);
 app.post('/orders', ordersDAO.createOrder);
 app.put('/orders', ordersDAO.updateOrder);
 app.delete('/orders', ordersDAO.deleteOrder);
+app.delete('/order/product', ordersDAO.deleteProductFromOrder);
 app.get('/supported-search-types', widgetInventoryDAO.getSupportedSearchTypes);
 app.get('/enums/types', enumDAO.getTypes);
 app.get('/enums/sizes', enumDAO.getSizes);
