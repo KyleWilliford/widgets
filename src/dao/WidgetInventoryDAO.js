@@ -59,11 +59,12 @@ function getAllWidgets(req, res, next) {
   }
 
   Q.fcall(getWidgets)
-    .catch(function (error) {
+    .catch(function(error) {
       console.log(error);
+      res.status(400).send(error);
     })
     .done(function() {
-      res.send(widgets);
+      if(!res.headersSent) res.send(widgets);
     });
 }
 
@@ -93,11 +94,12 @@ function createWidget(req, res, next) {
   }
 
   Q.fcall(createWidget)
-    .catch(function (error) {
+    .catch(function(error) {
       console.log(error);
+      res.status(400).send(error);
     })
     .done(function() {
-      res.send(widget);
+      if(!res.headersSent) res.send(widget);
     });
 }
 
@@ -153,11 +155,12 @@ function getWidgetsBySize(req, res, next) {
   }
 
   Q.fcall(getWidgets)
-    .catch(function (error) {
+    .catch(function(error) {
       console.log(error);
+      res.status(400).send(error);
     })
     .done(function() {
-      res.send(widgets);
+      if(!res.headersSent) res.send(widgets);
     });
 }
 
@@ -213,11 +216,12 @@ function getWidgetsByType(req, res, next) {
   }
 
   Q.fcall(getWidgets)
-    .catch(function (error) {
+    .catch(function(error) {
       console.log(error);
+      res.status(400).send(error);
     })
     .done(function() {
-      res.send(widgets);
+      if(!res.headersSent) res.send(widgets);
     });
 }
 
@@ -273,11 +277,12 @@ function getWidgetsByFinish(req, res, next) {
   }
 
   Q.fcall(getWidgets)
-    .catch(function (error) {
+    .catch(function(error) {
       console.log(error);
+      res.status(400).send(error);
     })
     .done(function() {
-      res.send(widgets);
+      if(!res.headersSent) res.send(widgets);
     });
 }
 
@@ -333,11 +338,12 @@ function getWidgetsByName(req, res, next) {
   }
 
   Q.fcall(getWidgets)
-    .catch(function (error) {
+    .catch(function(error) {
       console.log(error);
+      res.status(400).send(error);
     })
     .done(function() {
-      res.send(widgets);
+      if(!res.headersSent) res.send(widgets);
     });
 }
 

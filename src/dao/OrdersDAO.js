@@ -90,11 +90,12 @@ function getAllOrders(req, res, next) {
 
   Q.fcall(getOrders)
     .then(getProductsInOrders)
-    .catch(function (error) {
+    .catch(function(error) {
       console.log(error);
+      res.status(400).send(error);
     })
     .done(function() {
-      res.send(orders);
+      if(!res.headersSent) res.send(orders);
     });
 }
 
@@ -108,34 +109,8 @@ function updateOrder(req, res, next) {
     database : config.database
   });
 
-  var order_status_id;
-  function getStatus() {
-    var deferred = Q.defer();
-    connection.query('SELECT id FROM order_status_enum WHERE name = ' + SqlString.escape(order.status)
-      , function(error, results, fields) {
-      if (error) throw error;
-      if (results.length > 1 || results.length === 0) {
-        throw new Error('Failed to look up order status enum.');
-      }
-      order_status_id = results[0].id;
-      deferred.resolve();
-    });
-    return deferred.promise;
-  }
-
-  function updateStatus() {
-    var deferred = Q.defer();
-    connection.query('UPDATE customer_order SET order_status_id = ' + order_status_id
-       + ' WHERE id = ' + SqlString.escape(order.id) + ';'
-       , function(error, results, fields) {
-      if (error) throw error;
-      deferred.resolve();
-    });
-    return deferred.promise;
-  }
-
   var currentProductIds = [];
-  function getStock() {
+  function getCurrentOrderProducts() {
     var deferred = Q.defer();
     connection.query('SELECT p.id FROM product p INNER JOIN order_inventory oi ON oi.product_id = p.id WHERE oi.order_id = ' + SqlString.escape(order.id) + ';'
       , function(error, results, fields) {
@@ -143,6 +118,35 @@ function updateOrder(req, res, next) {
         results.forEach(function(result) {
           currentProductIds.push(result.id);
         });
+      deferred.resolve();
+    });
+    return deferred.promise;
+  }
+
+  function checkIfProductsAreInStock() {
+    var deferred = Q.defer();
+    order.products.forEach(function(product) {
+      connection.query('SELECT in_stock as inStock FROM product WHERE id = ' + SqlString.escape(product.id) + ';'
+        , function(error, results, fields) {
+          if (error) throw error;
+          results.forEach(function(result) {
+            if (!result.inStock && !currentProductIds.includes(product.id)) {
+              deferred.reject(`Product with id ${product.id} is not available.`);
+              return;
+            }
+          });
+        deferred.resolve();
+      });
+    });
+    return deferred.promise;
+  }
+
+  function updateStatus() {
+    var deferred = Q.defer();
+    connection.query('UPDATE customer_order SET order_status_id = ' + SqlString.escape(order.order_status_id)
+       + ' WHERE id = ' + SqlString.escape(order.id) + ';'
+       , function(error, results, fields) {
+      if (error) throw error;
       deferred.resolve();
     });
     return deferred.promise;
@@ -159,6 +163,7 @@ function updateOrder(req, res, next) {
   }
 
   function resetStock() {
+    if (currentProductIds.length === 0) return;
     var deferred = Q.defer();
     currentProductIds.forEach(function(productId) {
       connection.query('UPDATE product SET in_stock = true WHERE id = ' + SqlString.escape(productId) + ';'
@@ -194,18 +199,19 @@ function updateOrder(req, res, next) {
     return deferred.promise;
   }
 
-  Q.fcall(getStatus)
+  Q.fcall(getCurrentOrderProducts)
+    .then(checkIfProductsAreInStock)
     .then(updateStatus)
-    .then(getStock)
     .then(resetProducts)
     .then(resetStock)
     .then(insertOrderInventory)
     .then(updateStock)
-    .catch(function (error) {
+    .catch(function(error) {
       console.log(error);
+      res.status(400).send(error);
     })
     .done(function() {
-      res.send(order);
+      if(!res.headersSent) res.send(order);
     });
 }
 
@@ -273,11 +279,12 @@ function createOrder(req, res, next) {
     .then(getLastOrderId)
     .then(insertOrderInventory)
     .then(updateStock)
-    .catch(function (error) {
+    .catch(function(error) {
       console.log(error);
+      res.status(400).send(error);
     })
     .done(function() {
-      res.send(order);
+      if(!res.headersSent) res.send(order);
     });
 }
 
@@ -326,11 +333,12 @@ function deleteOrder(req, res, next) {
   Q.fcall(deleteOrderInventory)
     .then(deleteCustomerOrder)
     .then(resetStock)
-    .catch(function (error) {
+    .catch(function(error) {
       console.log(error);
+      res.status(400).send(error);
     })
     .done(function() {
-      res.send(order);
+      if(!res.headersSent) res.send(order);
     });
 }
 
