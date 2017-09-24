@@ -19,6 +19,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.post('/search/widgets/size', widgetInventoryDAO.getWidgetsBySize);
+app.post('/search/widgets/type', widgetInventoryDAO.getWidgetsByType);
+app.post('/search/widgets/finish', widgetInventoryDAO.getWidgetsByFinish);
+app.post('/search/widgets/name', widgetInventoryDAO.getWidgetsByName);
 app.get('/widgets', widgetInventoryDAO.getAllWidgets);
 app.post('/widgets', widgetInventoryDAO.createWidget);
 app.get('/orders', ordersDAO.getAllOrders);
