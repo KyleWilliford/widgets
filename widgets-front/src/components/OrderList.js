@@ -56,22 +56,28 @@ export default class OrderList extends React.Component {
     const { orders } = this.state;
     return (
       <div className="component-pad">
-        <h1>All Orders</h1>
+        <h1>Product Orders</h1>
         <div>
-          <ul>
-            {orders.map(order =>
-              <li key={order.id}>
-                <span>Order with id {order.id} placed at {order.orderDate}</span>
-                <UpdateOrder updateOrder = {this.updateOrder} order = {order} />
-                <DeleteOrder deleteOrder = {this.deleteOrder} order = {order} />
-                {order.products.map(product =>
-                  <div key={product.id}>
-                    <span>id: {product.id} name: {product.name}</span>
-                  </div>
-                )}
-              </li>
-            )}
-          </ul>
+          {orders.length === 0 ? (
+            <h3>
+              There are no orders to display.
+            </h3>
+          ) : (
+            <ul>
+              {orders.map(order =>
+                <li key={order.id}>
+                  <span>Order with id {order.id} placed at {order.orderDate}</span>
+                  <UpdateOrder updateOrder = {this.updateOrder} order = {order} />
+                  <DeleteOrder deleteOrder = {this.deleteOrder} order = {order} />
+                  {order.products.map(product =>
+                    <div key={product.id}>
+                      <span>id: {product.id} name: {product.name}</span>
+                    </div>
+                  )}
+                </li>
+              )}
+            </ul>
+          )}
         </div>
       </div>
     );

@@ -3,28 +3,48 @@ import React from 'react';
 export default class SearchWidgets extends React.Component {
   constructor() {
     super()
-    this.state = {value: ''};
+    this.state = { searchTypes: [], selectedSearchType: '', value: '' };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.selectedSearchTypeChange = this.selectedSearchTypeChange.bind(this);
+    this.textInputChange = this.textInputChange.bind(this);
+    this.submitSearch = this.submitSearch.bind(this);
   }
 
-  handleChange(event) {
+  componentDidMount() {
+    fetch('/supported-search-types')
+      .then(res => res.json())
+      .then(searchTypes => { 
+        this.setState({ searchTypes, selectedSearchType: searchTypes[0] });
+        console.log(this.state);
+      });
+  }
+
+  selectedSearchTypeChange(event) {
+    this.setState({selectedSearchType: event.target.value});
+  }
+
+  textInputChange(event) {
     this.setState({value: event.target.value});
   }
 
-  handleSubmit(event) {
-    console.log('A value was submitted: ' + this.state.value);
-    this.props.search('name', this.state.value);
+  submitSearch(event) {
+    console.log('A searchValue was submitted: ' + this.state.value);
+    this.props.search(this.state.selectedSearchType, this.state.value);
     event.preventDefault();
   }
 
   render() {
+    const searchTypes = this.state.searchTypes;
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.submitSearch}>
         <label>
           Search by: 
-          <input className="margin-5px" type="text" value={this.state.value} onChange={this.handleChange} />
+          <select className="margin=5px" onChange={this.selectedSearchTypeChange} value={this.state.selectedSearchType}>
+            {searchTypes.map((searchType, index) =>
+              <option key={index} value={searchType}>{searchType}</option>
+            )}
+          </select>
+          <input className="margin-5px" type="text" value={this.state.value} onChange={this.textInputChange} />
         </label>
         <input className="margin-5px" type="submit" value="Submit" />
       </form>

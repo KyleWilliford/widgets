@@ -29,6 +29,7 @@ app.get('/orders', ordersDAO.getAllOrders);
 app.post('/orders', ordersDAO.createOrder);
 app.put('/orders', ordersDAO.updateOrder);
 app.delete('/orders', ordersDAO.deleteOrder);
+app.get('/supported-search-types', widgetInventoryDAO.getSupportedSearchTypes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

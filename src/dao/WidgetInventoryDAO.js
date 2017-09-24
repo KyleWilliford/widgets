@@ -104,8 +104,8 @@ function createWidget(req, res, next) {
 }
 
 function getWidgetsBySize(req, res, next) {
-  let sizeId = SqlString.escape(req.body.id);
-  console.log(sizeId);
+  let name = SqlString.escape(req.body.name);
+  console.log(name);
   var connection = mysql.createConnection({
     host     : config.host,
     user     : config.user,
@@ -129,7 +129,7 @@ function getWidgetsBySize(req, res, next) {
     INNER JOIN product_type_enum t ON p.product_type_id = t.id
     INNER JOIN finish f ON p.finish_id = f.id
     INNER JOIN size s ON p.size_id = s.id
-    WHERE s.id = ${sizeId}
+    WHERE s.name = ${name}
     ORDER BY productId ASC;`;
   console.log(sql);
   function getWidgets() {
@@ -165,8 +165,8 @@ function getWidgetsBySize(req, res, next) {
 }
 
 function getWidgetsByType(req, res, next) {
-  let typeId = SqlString.escape(req.body.id);
-  console.log(typeId);
+  let name = SqlString.escape(req.body.name);
+  console.log(name);
   var connection = mysql.createConnection({
     host     : config.host,
     user     : config.user,
@@ -190,7 +190,7 @@ function getWidgetsByType(req, res, next) {
     INNER JOIN product_type_enum t ON p.product_type_id = t.id
     INNER JOIN finish f ON p.finish_id = f.id
     INNER JOIN size s ON p.size_id = s.id
-    WHERE t.id = ${typeId}
+    WHERE t.name = ${name}
     ORDER BY productId ASC;`;
   console.log(sql);
   function getWidgets() {
@@ -226,8 +226,8 @@ function getWidgetsByType(req, res, next) {
 }
 
 function getWidgetsByFinish(req, res, next) {
-  let finishId = SqlString.escape(req.body.id);
-  console.log(finishId);
+  let name = SqlString.escape(req.body.name);
+  console.log(name);
   var connection = mysql.createConnection({
     host     : config.host,
     user     : config.user,
@@ -251,7 +251,7 @@ function getWidgetsByFinish(req, res, next) {
     INNER JOIN product_type_enum t ON p.product_type_id = t.id
     INNER JOIN finish f ON p.finish_id = f.id
     INNER JOIN size s ON p.size_id = s.id
-    WHERE f.id = ${finishId}
+    WHERE f.name = ${name}
     ORDER BY productId ASC;`;
   console.log(sql);
   function getWidgets() {
@@ -347,11 +347,18 @@ function getWidgetsByName(req, res, next) {
     });
 }
 
+function getSupportedSearchTypes(req, res, next) {
+  res.send([
+    'name', 'size', 'finish', 'type',
+  ]);
+}
+
 module.exports = {
   getAllWidgets: getAllWidgets,
   createWidget: createWidget,
   getWidgetsBySize: getWidgetsBySize,
   getWidgetsByType: getWidgetsByType,
   getWidgetsByFinish: getWidgetsByFinish,
-  getWidgetsByName: getWidgetsByName
+  getWidgetsByName: getWidgetsByName,
+  getSupportedSearchTypes: getSupportedSearchTypes
 };

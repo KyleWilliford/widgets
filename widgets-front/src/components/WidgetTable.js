@@ -15,13 +15,14 @@ export default class WidgetTable extends React.Component {
   }
 
   update() {
+    this.refs.searchWidget.setState({ value: '' });
     fetch('/widgets')
       .then(res => res.json())
       .then(widgets => this.setState({ widgets }));
   }
 
   search(what, value) {
-    console.log('search called on: ' + what);
+    console.log('search called on: ' + what + ' with value: ' + value);
     fetch('/search/widgets/' + what, {
       method: 'POST',
       headers: {
@@ -38,8 +39,8 @@ export default class WidgetTable extends React.Component {
     const { widgets }  = this.state;
     return (
       <div className="component-pad">
-        <h1>Widgets</h1>
-        <SearchWidgets search = {this.search} />
+        <h1>Product Inventory</h1>
+        <SearchWidgets ref="searchWidget" search = {this.search} />
         <div>
           {widgets.length === 0 ? (
             <h3>
