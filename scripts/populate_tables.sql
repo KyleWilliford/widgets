@@ -41,7 +41,7 @@ CREATE TABLE size (
 
 CREATE TABLE product (
   id BIGINT NOT NULL AUTO_INCREMENT,
-  name varchar(32) NOT NULL,
+  name varchar(64) NOT NULL,
   product_type_id BIGINT NOT NULL,
   finish_id BIGINT,
   size_id BIGINT,

@@ -51,7 +51,11 @@ export default class CreateWidget extends React.Component {
   }
 
   submitNewWidget(event) {
-    console.log('A new order was submitted: ' + this.state.value);
+    console.log('A new widget was submitted with name: ' + this.state.value);
+    let name = this.state.value.substring(0, 64); // name field only supports 64 characters
+    if(!name) {
+      name = 'Unknown';
+    }
     event.preventDefault();
     let selectedType;
     this.state.types.forEach(type => {
@@ -75,7 +79,7 @@ export default class CreateWidget extends React.Component {
       }
     });
     const widget = {
-      name: this.state.value,
+      name: name,
       type: selectedType,
       size: selectedSize,
       finish: selectedFinish
