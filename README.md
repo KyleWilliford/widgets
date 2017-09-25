@@ -1,5 +1,9 @@
 # Widgets React / Express Sample App
 
+# Live Site
+UI: http://ec2-184-72-124-34.compute-1.amazonaws.com:3000/
+Back end (for REST calls): http://ec2-184-72-124-34.compute-1.amazonaws.com:3001/
+
 # Requirements
 npm 5.4.x+
 node 8.4.x+
