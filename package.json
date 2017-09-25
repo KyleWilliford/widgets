@@ -9,13 +9,14 @@
   "dependencies": {
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
-    "debug": "~2.6.3",
-    "express": "~4.15.2",
+    "debug": "^2.6.9",
+    "eslint-config-google": "^0.9.1",
+    "express": "^4.15.5",
     "jade": "~1.11.0",
     "mocha": "^3.5.3",
     "morgan": "~1.8.1",
     "mysql": "github:mysqljs/mysql",
-    "node-mocks-http": "^1.6.4",
+    "node-mocks-http": "^1.6.5",
     "q": "^1.5.0",
     "serve-favicon": "~2.4.2",
     "sqlstring": "^2.2.0",
@@ -23,7 +24,9 @@
   },
   "description": "Widget Store Application",
   "main": "app.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^4.7.2"
+  },
   "author": "KyleWilliford",
   "license": "ISC"
 }

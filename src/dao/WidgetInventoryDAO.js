@@ -12,12 +12,7 @@ var SqlString = require('sqlstring');
 var Q = require('q');
 
 function getAllWidgets(req, res, next) {
-  var connection = mysql.createConnection({
-    host     : config.host,
-    user     : config.user,
-    password : config.password,
-    database : config.database
-  });
+  var connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let widgets = [];
   function getWidgets() {
@@ -71,12 +66,7 @@ function getAllWidgets(req, res, next) {
 function createWidget(req, res, next) {
   let widget = req.body;
   console.log(widget);
-  var connection = mysql.createConnection({
-    host     : config.host,
-    user     : config.user,
-    password : config.password,
-    database : config.database
-  });
+  var connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let sql = 'INSERT INTO product (name, product_type_id, finish_id, size_id) VALUES (' +
       SqlString.escape(widget.name) + ',' +
@@ -106,12 +96,7 @@ function createWidget(req, res, next) {
 function getWidgetsBySize(req, res, next) {
   let name = SqlString.escape(req.body.name);
   console.log(name);
-  var connection = mysql.createConnection({
-    host     : config.host,
-    user     : config.user,
-    password : config.password,
-    database : config.database
-  });
+  var connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let widgets = [];
   let sql = `SELECT
@@ -167,12 +152,7 @@ function getWidgetsBySize(req, res, next) {
 function getWidgetsByType(req, res, next) {
   let name = SqlString.escape(req.body.name);
   console.log(name);
-  var connection = mysql.createConnection({
-    host     : config.host,
-    user     : config.user,
-    password : config.password,
-    database : config.database
-  });
+  var connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let widgets = [];
   let sql = `SELECT
@@ -228,12 +208,7 @@ function getWidgetsByType(req, res, next) {
 function getWidgetsByFinish(req, res, next) {
   let name = SqlString.escape(req.body.name);
   console.log(name);
-  var connection = mysql.createConnection({
-    host     : config.host,
-    user     : config.user,
-    password : config.password,
-    database : config.database
-  });
+  var connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let widgets = [];
   let sql = `SELECT
@@ -289,12 +264,7 @@ function getWidgetsByFinish(req, res, next) {
 function getWidgetsByName(req, res, next) {
   let name = SqlString.escape(req.body.name);
   console.log(name);
-  var connection = mysql.createConnection({
-    host     : config.host,
-    user     : config.user,
-    password : config.password,
-    database : config.database
-  });
+  var connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let widgets = [];
   let sql = `SELECT

@@ -1,3 +1,6 @@
+/*
+* DAO functions for working with enum relations.
+*/
 var Size = require('../model/Size.js');
 var Finish = require('../model/Finish.js');
 var WidgetType = require('../model/WidgetType.js');
@@ -6,14 +9,13 @@ var mysql = require('mysql');
 var SqlString = require('sqlstring');
 var Q = require('q');
 
+/*
+* GET all product types from the product_type_enum table and return them as an array of WidgetType objects.
+* @
+*/
 function getTypes(req, res, next) {
   console.log(req.body);
-  var connection = mysql.createConnection({
-    host     : config.host,
-    user     : config.user,
-    password : config.password,
-    database : config.database
-  });
+  var connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let types = [];
   function getProductTypes() {
@@ -49,12 +51,7 @@ function getTypes(req, res, next) {
 
 function getSizes(req, res, next) {
   console.log(req.body);
-  var connection = mysql.createConnection({
-    host     : config.host,
-    user     : config.user,
-    password : config.password,
-    database : config.database
-  });
+  var connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let sizes = [];
   function _getSizes() {
@@ -90,12 +87,7 @@ function getSizes(req, res, next) {
 
 function getFinishes(req, res, next) {
   console.log(req.body);
-  var connection = mysql.createConnection({
-    host     : config.host,
-    user     : config.user,
-    password : config.password,
-    database : config.database
-  });
+  var connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let finishes = [];
   function _getFinishes() {

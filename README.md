@@ -2,16 +2,34 @@
 
 # Requirements
 npm 5.4.x+
+react-scripts 1.0.x
 node 8.4.x+
 MySQL 5.7.x+
 various node libraries will be installed in the next step
 
 # Install dependencies
+`$ cd widgets`
+
 `$ npm i`
 
 `$ cd widgets-front`
 
 `$ npm i`
+
+`$ npm i react-scripts`
+
+# Database (MySQL)
+
+### Note
+The following scripts have not been tested with SQL servers other than MySQL Server 5.7.x
+
+## Setup
+Install mysql-server. This will vary depending on the environment. Refer to https://dev.mysql.com/doc/refman/5.7/en/installing.html for more information.
+
+Run the script provided in the `scripts` directory named `db_setup.sql`. These statements can be run all at once, but must be run in order.
+
+## Create Schema, Tables, Populate some sample data
+Run the script provided in the `scripts` directory named `populate_tables.sql`. These statements can be run all at once, and some must be run in order.
 
 # Start the backend/Express server
 `$ cd <repo directory>`
@@ -28,10 +46,3 @@ Using forever (default port is 3001):
 
 Using forever (default port is 3000) (Not tested):
 `forever start -c "npm start" ./`
-
-# Database
-## Setup
-Use the script provided in the `scripts` directory named `db_setup.sql`. These statements may need to be run individually.
-
-## Create Schema, Tables, Populate some sample data
-Use the script provided in the `scripts` directory named `populate_tables.sql`. These statements can be run all at once.

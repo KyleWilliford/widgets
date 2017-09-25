@@ -1,3 +1,4 @@
 *node_modules
 goals.txt
 build
+.eslintrc.js

@@ -13,12 +13,7 @@ var SqlString = require('sqlstring');
 var Q = require('q');
 
 function getAllOrders(req, res, next) {
-  var connection = mysql.createConnection({
-    host     : config.host,
-    user     : config.user,
-    password : config.password,
-    database : config.database
-  });
+  var connection = mysql.createConnection(config.getConnectionConfigObject());
 
   var orders = [];
   function getOrders() {
@@ -103,12 +98,7 @@ function getAllOrders(req, res, next) {
 function updateOrder(req, res, next) {
   console.log(req.body);
   var order = req.body;
-  var connection = mysql.createConnection({
-    host     : config.host,
-    user     : config.user,
-    password : config.password,
-    database : config.database
-  });
+  var connection = mysql.createConnection(config.getConnectionConfigObject());
 
   var currentProductIds = [];
   function getCurrentOrderProducts() {
@@ -223,12 +213,7 @@ function updateOrder(req, res, next) {
 function createOrder(req, res, next) {
   console.log(req.body);
   var order = req.body;
-  var connection = mysql.createConnection({
-    host     : config.host,
-    user     : config.user,
-    password : config.password,
-    database : config.database
-  });
+  var connection = mysql.createConnection(config.getConnectionConfigObject());
 
   function createCustomerOrder() {
     var deferred = Q.defer();
@@ -298,12 +283,7 @@ function createOrder(req, res, next) {
 function deleteOrder(req, res, next) {
   console.log(req.body);
   var order = req.body;
-  var connection = mysql.createConnection({
-    host     : config.host,
-    user     : config.user,
-    password : config.password,
-    database : config.database
-  });
+  var connection = mysql.createConnection(config.getConnectionConfigObject());
 
   function deleteOrderInventory() {
     var deferred = Q.defer();
@@ -355,12 +335,7 @@ function deleteProductFromOrder(req, res, next) {
   console.log(orderId);
   var productId = SqlString.escape(req.body.productId);
   console.log(productId);
-  var connection = mysql.createConnection({
-    host     : config.host,
-    user     : config.user,
-    password : config.password,
-    database : config.database
-  });
+  var connection = mysql.createConnection(config.getConnectionConfigObject());
 
   function deleteOrderInventory() {
     var deferred = Q.defer();
