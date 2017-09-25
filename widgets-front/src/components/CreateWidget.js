@@ -21,7 +21,6 @@ export default class CreateWidget extends React.Component {
         if (types.length > 0) {
           this.setState({ typeId: types[0].id });
         }
-        console.log(this.state.types);
       });
     fetch('/enums/sizes')
       .then(res => res.json())
@@ -30,7 +29,6 @@ export default class CreateWidget extends React.Component {
         if (sizes.length > 0) {
           this.setState({ sizeId: sizes[0].id });
         }
-        console.log(this.state.sizes);
       });
     fetch('/enums/finishes')
       .then(res => res.json())
@@ -39,7 +37,6 @@ export default class CreateWidget extends React.Component {
         if (finishes.length > 0) {
           this.setState({ finishId: finishes[0].id });
         }
-        console.log(this.state.finishes);
       });
   }
 

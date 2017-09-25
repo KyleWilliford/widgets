@@ -125,6 +125,7 @@ function updateOrder(req, res, next) {
   }
 
   function checkIfProductsAreInStock() {
+    if (!order || !order.products || order.products.length === 0) return;
     var deferred = Q.defer();
     order.products.forEach(function(product) {
       connection.query('SELECT in_stock as inStock FROM product WHERE id = ' + SqlString.escape(product.id) + ';'
@@ -143,6 +144,7 @@ function updateOrder(req, res, next) {
   }
 
   function updateStatus() {
+    if (!order || !order.order_status_id) return;
     var deferred = Q.defer();
     connection.query('UPDATE customer_order SET order_status_id = ' + SqlString.escape(order.order_status_id)
        + ' WHERE id = ' + SqlString.escape(order.id) + ';'

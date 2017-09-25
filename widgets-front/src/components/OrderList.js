@@ -1,6 +1,7 @@
 import React from 'react';
 import DeleteOrder from './DeleteOrder.js';
 import CreateOrder from './CreateOrder.js';
+import UpdateOrder from './UpdateOrder.js';
 import '../styles/OrderList.css';
 
 export default class OrderList extends React.Component {
@@ -11,6 +12,7 @@ export default class OrderList extends React.Component {
     this.deleteOrder = this.deleteOrder.bind(this);
     this.deleteProductFromOrder = this.deleteProductFromOrder.bind(this);
     this.sendOrder = this.sendOrder.bind(this);
+    this.sendUpdatedOrder = this.sendUpdatedOrder.bind(this);
   }
 
   componentDidMount() {
@@ -24,7 +26,6 @@ export default class OrderList extends React.Component {
   }
 
   deleteOrder(order) {
-    console.log('Delete order with id ' + order.id);
     fetch('/orders', {
       method: 'DELETE',
       headers: {
@@ -40,11 +41,17 @@ export default class OrderList extends React.Component {
         .then(response => this.props.ordersChanged())
         .then(response => this.forceUpdate())
         .then(response => this.refs.createOrderRef.update())
+        .then(response => {
+          Object.keys(this.refs).forEach(updateOrderRef => {
+            if(updateOrderRef !== 'self') {
+            this.refs[updateOrderRef].update();
+             }
+          });
+        });
     });
   }
 
   deleteProductFromOrder(orderId, productId) {
-    console.log('Remove product with id ' + productId + ' from order with id ' + orderId);
     fetch('/order/product', {
       method: 'DELETE',
       headers: {
@@ -59,7 +66,14 @@ export default class OrderList extends React.Component {
         .then(orders => this.setState({ orders }))
         .then(response => this.props.ordersChanged())
         .then(response => this.forceUpdate())
-        .then(response => this.refs.createOrderRef.update());
+        .then(response => this.refs.createOrderRef.update())
+        .then(response => {
+          Object.keys(this.refs).forEach(updateOrderRef => {
+            if(updateOrderRef !== 'self') {
+            this.refs[updateOrderRef].update();
+             }
+          });
+        });
     });
   }
 
@@ -72,7 +86,34 @@ export default class OrderList extends React.Component {
       },
       body: JSON.stringify(order)
     })
-    .then(response => this.update());
+    .then(response => this.update())
+    .then(response => {
+      Object.keys(this.refs).forEach(updateOrderRef => {
+        if(updateOrderRef !== 'self') {
+        this.refs[updateOrderRef].update();
+         }
+      });
+    });
+  }
+
+  sendUpdatedOrder(order) {
+    fetch('/orders', {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(order)
+    })
+    .then(response => this.refs.createOrderRef.update())
+    .then(response => this.update())
+    .then(response => {
+      Object.keys(this.refs).forEach(updateOrderRef => {
+        if(updateOrderRef !== 'self') {
+        this.refs[updateOrderRef].update();
+         }
+      });
+    });
   }
 
   render() {
@@ -83,7 +124,7 @@ export default class OrderList extends React.Component {
         <div>
           <CreateOrder ref="createOrderRef" sendOrder = {this.sendOrder} />
         </div>
-        <br></br>
+        <h2>Existing Orders</h2>
         <div>
           {orders.length === 0 ? (
             <h3>
@@ -101,21 +142,24 @@ export default class OrderList extends React.Component {
                         There are no products to display for this order.
                       </h6>
                     ) : (
-                      <table id="orders-table">
-                        <tbody>
-                          <tr><td>ID</td><td>Name</td><td>Type</td><td>Size</td><td>Finish</td><td>Remove?</td></tr>
-                          {order.products.map(product =>
-                            <tr key={product.id}>
-                              <td>{product.id}</td>
-                              <td>{product.name}</td>
-                              <td>{product.type.name}</td>
-                              <td>{product.size.name}</td>
-                              <td>{product.finish.name}</td>
-                              <td><button onClick={this.deleteProductFromOrder.bind(this, order.id, product.id)}>Remove</button></td>
-                            </tr>
-                          )}
-                        </tbody>
-                      </table>
+                      <div>
+                        <table id="orders-table">
+                          <tbody>
+                            <tr><td>ID</td><td>Name</td><td>Type</td><td>Size</td><td>Finish</td><td>Remove?</td></tr>
+                            {order.products.map(product =>
+                              <tr key={product.id}>
+                                <td>{product.id}</td>
+                                <td>{product.name}</td>
+                                <td>{product.type.name}</td>
+                                <td>{product.size.name}</td>
+                                <td>{product.finish.name}</td>
+                                <td><button onClick={this.deleteProductFromOrder.bind(this, order.id, product.id)}>Remove</button></td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                        <UpdateOrder ref={"updateOrderRef" + order.id} key={order.id} sendUpdatedOrder = {this.sendUpdatedOrder} order = {order} />
+                      </div>
                     )}
                 </li>
               )}

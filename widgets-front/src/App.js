@@ -13,7 +13,6 @@ export default class App extends Component {
   }
 
   ordersChanged() {
-    console.log('In App.js ordersChanged()');
     this.refs.widgetTable.update();
   }
 

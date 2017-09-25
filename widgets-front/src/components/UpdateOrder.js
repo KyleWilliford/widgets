@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class CreateOrder extends React.Component {
+export default class UpdateOrder extends React.Component {
   constructor() {
     super()
     this.state = { availableProducts: [], productId: -1, selectedProducts: [] };
@@ -8,7 +8,7 @@ export default class CreateOrder extends React.Component {
     this.productSelectedChange = this.productSelectedChange.bind(this);
     this.addProductToOrder = this.addProductToOrder.bind(this);
     this.removeProductFromOrder = this.removeProductFromOrder.bind(this);
-    this.submitNewOrder = this.submitNewOrder.bind(this);
+    this.submitUpdatedOrder = this.submitUpdatedOrder.bind(this);
   }
 
   componentDidMount() {
@@ -68,11 +68,10 @@ export default class CreateOrder extends React.Component {
     });
   }
 
-  submitNewOrder() {
-    const order = {
-      products: this.state.selectedProducts
-    };
-    this.props.sendOrder(order);
+  submitUpdatedOrder() {
+    let order = this.props.order;
+    order.products = order.products.concat(this.state.selectedProducts);
+    this.props.sendUpdatedOrder(order);
     this.setState({ selectedProducts: [] });
     this.forceUpdate();
   }
@@ -81,8 +80,7 @@ export default class CreateOrder extends React.Component {
     const availableProducts = this.state.availableProducts;
     const selectedProducts = this.state.selectedProducts;
     return (
-      <div>
-        <h2>Create An Order</h2>
+      <div><h4>Update This Order</h4>
         <span className="margin-5px">Choose a product to add to the order:</span>
         <select className="margin=5px" onChange={this.productSelectedChange} value={this.state.productId}>
           {availableProducts.map(product =>
@@ -93,7 +91,7 @@ export default class CreateOrder extends React.Component {
         <div>
           {selectedProducts.length !== 0 && 
             <div>
-              <table id="new-order-table">
+              <table className="new-order-table">
                 <tbody>
                   <tr><td>ID</td><td>Name</td><td>Type</td><td>Size</td><td>Finish</td><td>Remove?</td></tr>
                   {selectedProducts.map(product =>
@@ -108,7 +106,7 @@ export default class CreateOrder extends React.Component {
                   )}
                 </tbody>
               </table>
-              <button className="margin-5px" onClick={this.submitNewOrder}>Finalize Order</button>
+              <button className="margin-5px" onClick={this.submitUpdatedOrder}>Update Order</button>
             </div>
           }
         </div>
