@@ -1,6 +1,5 @@
 import React from 'react';
 import DeleteOrder from './DeleteOrder.js';
-import UpdateOrder from './UpdateOrder.js';
 import CreateOrder from './CreateOrder.js';
 import '../styles/OrderList.css';
 
@@ -8,36 +7,24 @@ export default class OrderList extends React.Component {
   constructor() {
     super()
     this.state = { orders: [] };
-    this.updateOrder = this.updateOrder.bind(this);
+    this.update = this.update.bind(this);
     this.deleteOrder = this.deleteOrder.bind(this);
     this.deleteProductFromOrder = this.deleteProductFromOrder.bind(this);
+    this.sendOrder = this.sendOrder.bind(this);
   }
 
   componentDidMount() {
+    this.update();
+  }
+
+  update() {
     fetch('/orders')
       .then(res => res.json())
       .then(orders => this.setState({ orders }));
   }
 
-  updateOrder(order) {
-    console.log(order);
-    fetch('/orders', {
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(order)
-    })
-    .then(response => {
-      fetch('/orders')
-        .then(res => res.json())
-        .then(orders => this.setState({ orders }))
-        .then(response => this.props.ordersChanged())
-    });
-  }
-
   deleteOrder(order) {
+    console.log('Delete order with id ' + order.id);
     fetch('/orders', {
       method: 'DELETE',
       headers: {
@@ -51,6 +38,8 @@ export default class OrderList extends React.Component {
         .then(res => res.json())
         .then(orders => this.setState({ orders }))
         .then(response => this.props.ordersChanged())
+        .then(response => this.forceUpdate())
+        .then(response => this.refs.createOrderRef.update())
     });
   }
 
@@ -69,7 +58,21 @@ export default class OrderList extends React.Component {
         .then(res => res.json())
         .then(orders => this.setState({ orders }))
         .then(response => this.props.ordersChanged())
+        .then(response => this.forceUpdate())
+        .then(response => this.refs.createOrderRef.update());
     });
+  }
+
+  sendOrder(order) {
+    fetch('/orders', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(order)
+    })
+    .then(response => this.update());
   }
 
   render() {
@@ -78,16 +81,19 @@ export default class OrderList extends React.Component {
       <div className="component-pad">
         <h1>Product Orders</h1>
         <div>
+          <CreateOrder ref="createOrderRef" sendOrder = {this.sendOrder} />
+        </div>
+        <br></br>
+        <div>
           {orders.length === 0 ? (
             <h3>
-              There are no orders to display.
+              There are no current orders to display.
             </h3>
           ) : (
             <ul>
               {orders.map(order =>
                 <li key={order.id}>
                   <span>Order with id {order.id} placed at {order.orderDate}</span>
-                  <UpdateOrder updateOrder = {this.updateOrder} order = {order} />
                   <DeleteOrder deleteOrder = {this.deleteOrder} order = {order} />
                   <h5>Products In This Order</h5>
                     {order.products.length === 0 ? (
@@ -105,7 +111,8 @@ export default class OrderList extends React.Component {
                               <td>{product.type.name}</td>
                               <td>{product.size.name}</td>
                               <td>{product.finish.name}</td>
-                              <td><button value={product.id} onClick={this.deleteProductFromOrder.bind(this, order.id, product.id)}>Remove</button></td></tr>
+                              <td><button onClick={this.deleteProductFromOrder.bind(this, order.id, product.id)}>Remove</button></td>
+                            </tr>
                           )}
                         </tbody>
                       </table>

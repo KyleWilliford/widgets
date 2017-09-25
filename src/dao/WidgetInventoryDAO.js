@@ -39,7 +39,7 @@ function getAllWidgets(req, res, next) {
     INNER JOIN finish f ON p.finish_id = f.id
     INNER JOIN size s ON p.size_id = s.id
     ORDER BY productId DESC;`, function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       console.log(results);
       results.forEach(function(result) {
         console.log(result);
@@ -87,7 +87,7 @@ function createWidget(req, res, next) {
   function createWidget() {
     var deferred = Q.defer();
     connection.query(sql, function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       deferred.resolve();
     });
     return deferred.promise;
@@ -135,7 +135,7 @@ function getWidgetsBySize(req, res, next) {
   function getWidgets() {
     var deferred = Q.defer();
     connection.query(sql, function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       console.log(results);
       results.forEach(function(result) {
         console.log(result);
@@ -196,7 +196,7 @@ function getWidgetsByType(req, res, next) {
   function getWidgets() {
     var deferred = Q.defer();
     connection.query(sql, function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       console.log(results);
       results.forEach(function(result) {
         console.log(result);
@@ -257,7 +257,7 @@ function getWidgetsByFinish(req, res, next) {
   function getWidgets() {
     var deferred = Q.defer();
     connection.query(sql, function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       console.log(results);
       results.forEach(function(result) {
         console.log(result);
@@ -318,7 +318,7 @@ function getWidgetsByName(req, res, next) {
   function getWidgets() {
     var deferred = Q.defer();
     connection.query(sql, function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       console.log(results);
       results.forEach(function(result) {
         console.log(result);

@@ -13,6 +13,7 @@ export default class App extends Component {
   }
 
   ordersChanged() {
+    console.log('In App.js ordersChanged()');
     this.refs.widgetTable.update();
   }
 
@@ -20,10 +21,10 @@ export default class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          <h2>Welcome to the "Uber of Widgets" Widget Store</h2>
-          <h3>Created By: <a href="https://github.com/KyleWilliford">Kyle Williford</a></h3>
+          <h2>Welcome to... some place that sells Widgets</h2>
+          <h4>We apologize about the poor presentation of this site. We are hard at work hiring men with shovels to fill in the holes.</h4>
         </div>
-        <div  className="pad-left">
+        <div className="pad-left">
           <div>
             <OrderList ordersChanged = {this.ordersChanged} />
           </div>

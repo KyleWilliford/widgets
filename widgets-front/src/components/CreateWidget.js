@@ -17,19 +17,28 @@ export default class CreateWidget extends React.Component {
     fetch('/enums/types')
       .then(res => res.json())
       .then(types => { 
-        this.setState({ types: types, typeId: types[0].id });
+        this.setState({ types: types });
+        if (types.length > 0) {
+          this.setState({ typeId: types[0].id });
+        }
         console.log(this.state.types);
       });
     fetch('/enums/sizes')
       .then(res => res.json())
       .then(sizes => { 
-        this.setState({ sizes: sizes, sizeId: sizes[0].id });
+        this.setState({ sizes: sizes });
+        if (sizes.length > 0) {
+          this.setState({ sizeId: sizes[0].id });
+        }
         console.log(this.state.sizes);
       });
     fetch('/enums/finishes')
       .then(res => res.json())
       .then(finishes => { 
-        this.setState({ finishes: finishes, finishId: finishes[0].id });
+        this.setState({ finishes: finishes });
+        if (finishes.length > 0) {
+          this.setState({ finishId: finishes[0].id });
+        }
         console.log(this.state.finishes);
       });
   }

@@ -24,7 +24,7 @@ function getTypes(req, res, next) {
       name
     FROM product_type_enum
     ORDER BY id ASC;`, function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       console.log(results);
       results.forEach(function(result) {
         console.log(result);
@@ -65,7 +65,7 @@ function getSizes(req, res, next) {
       name
     FROM size
     ORDER BY id ASC;`, function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       console.log(results);
       results.forEach(function(result) {
         console.log(result);
@@ -107,7 +107,7 @@ function getFinishes(req, res, next) {
       hex_code
     FROM finish
     ORDER BY id ASC;`, function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       console.log(results);
       results.forEach(function(result) {
         console.log(result);

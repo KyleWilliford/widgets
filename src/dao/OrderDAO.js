@@ -33,7 +33,7 @@ function getAllOrders(req, res, next) {
     INNER JOIN order_status_enum s ON o.order_status_id = s.id
     ORDER BY orderId DESC;`
     , function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       results.forEach(function(result) {
         const order = new Order(result.orderId, [], result.orderDate, result.orderUpdated, result.orderStatus);
         if (order) orders.push(order);
@@ -65,7 +65,7 @@ function getAllOrders(req, res, next) {
     INNER JOIN size s ON p.size_id = s.id
     ORDER BY orderId DESC;`
     , function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       results.forEach(function(result) {
         console.log(result);
         const size = new Size(result.sizeId, result.sizeName);
@@ -76,6 +76,7 @@ function getAllOrders(req, res, next) {
         console.log(type);
         const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName, type, result.inStock);
         console.log(widget);
+        if (orders.length === 0) return;
         orders.forEach(function(order) {
           if (order.id === result.orderId) {
             order.products.push(widget);
@@ -114,7 +115,7 @@ function updateOrder(req, res, next) {
     var deferred = Q.defer();
     connection.query('SELECT p.id FROM product p INNER JOIN order_inventory oi ON oi.product_id = p.id WHERE oi.order_id = ' + SqlString.escape(order.id) + ';'
       , function(error, results, fields) {
-        if (error) throw error;
+        if (error) deferred.reject(error);
         results.forEach(function(result) {
           currentProductIds.push(result.id);
         });
@@ -128,7 +129,7 @@ function updateOrder(req, res, next) {
     order.products.forEach(function(product) {
       connection.query('SELECT in_stock as inStock FROM product WHERE id = ' + SqlString.escape(product.id) + ';'
         , function(error, results, fields) {
-          if (error) throw error;
+          if (error) deferred.reject(error);
           results.forEach(function(result) {
             if (!result.inStock && !currentProductIds.includes(product.id)) {
               deferred.reject(`Product with id ${product.id} is not available.`);
@@ -146,7 +147,7 @@ function updateOrder(req, res, next) {
     connection.query('UPDATE customer_order SET order_status_id = ' + SqlString.escape(order.order_status_id)
        + ' WHERE id = ' + SqlString.escape(order.id) + ';'
        , function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       deferred.resolve();
     });
     return deferred.promise;
@@ -156,7 +157,7 @@ function updateOrder(req, res, next) {
     var deferred = Q.defer();
     connection.query('DELETE FROM order_inventory WHERE order_id = ' + SqlString.escape(order.id) + ';'
       , function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       deferred.resolve();
     });
     return deferred.promise;
@@ -168,7 +169,7 @@ function updateOrder(req, res, next) {
     currentProductIds.forEach(function(productId) {
       connection.query('UPDATE product SET in_stock = true WHERE id = ' + SqlString.escape(productId) + ';'
         , function(error, results, fields) {
-        if (error) throw error;
+        if (error) deferred.reject(error);
         deferred.resolve();
       });
     });
@@ -176,11 +177,12 @@ function updateOrder(req, res, next) {
   }
 
   function insertOrderInventory() {
+    if (!order || !order.products || order.products.length === 0) return;
     var deferred = Q.defer();
     order.products.forEach(function(product) {
       connection.query('INSERT INTO order_inventory (order_id, product_id) VALUES (' + SqlString.escape(order.id) + ',' + SqlString.escape(product.id) + ');'
         , function(error, results, fields) {
-        if (error) throw error;
+        if (error) deferred.reject(error);
         deferred.resolve();
       });
     });
@@ -188,11 +190,12 @@ function updateOrder(req, res, next) {
   }
 
   function updateStock() {
+    if (!order || !order.products || order.products.length === 0) return;
     var deferred = Q.defer();
     order.products.forEach(function(product) {
       connection.query('UPDATE product SET in_stock = false WHERE id = ' + SqlString.escape(product.id) + ';'
         , function(error, results, fields) {
-        if (error) throw error;
+        if (error) deferred.reject(error);
         deferred.resolve();
       });
     });
@@ -230,7 +233,7 @@ function createOrder(req, res, next) {
     // All new orders start off with status 1 = Pending
     connection.query('INSERT INTO customer_order (order_status_id) VALUES (1);'
       , function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       deferred.resolve();
     });
     return deferred.promise;
@@ -241,7 +244,7 @@ function createOrder(req, res, next) {
     // All new orders start off with status 1 = Pending
     connection.query('SELECT LAST_INSERT_ID() AS orderId;'
       , function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       if (results.length > 1 || results.length === 0) {
         throw new Error('Failed to look up the order id.');
       }
@@ -252,11 +255,12 @@ function createOrder(req, res, next) {
   }
 
   function insertOrderInventory() {
+    if (!order || !order.products || order.products.length === 0) return;
     var deferred = Q.defer();
     order.products.forEach(function(product) {
       connection.query('INSERT INTO order_inventory (order_id, product_id) VALUES (' + SqlString.escape(order.id) + ',' + SqlString.escape(product.id) + ');'
         , function(error, results, fields) {
-        if (error) throw error;
+        if (error) deferred.reject(error);
         deferred.resolve();
       });
     });
@@ -264,11 +268,12 @@ function createOrder(req, res, next) {
   }
 
   function updateStock() {
+    if (!order || !order.products || order.products.length === 0) return;
     var deferred = Q.defer();
     order.products.forEach(function(product) {
       connection.query('UPDATE product SET in_stock = false WHERE id = ' + SqlString.escape(product.id) + ';'
         , function(error, results, fields) {
-        if (error) throw error;
+        if (error) deferred.reject(error);
         deferred.resolve();
       });
     });
@@ -300,9 +305,9 @@ function deleteOrder(req, res, next) {
 
   function deleteOrderInventory() {
     var deferred = Q.defer();
-    connection.query('DELETE FROM order_inventory WHERE order_id = ' + SqlString.escape(order.id)
+    connection.query('DELETE FROM order_inventory WHERE order_id = ' + SqlString.escape(order.id) + ';'
       , function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       deferred.resolve();
     });
     return deferred.promise;
@@ -310,20 +315,21 @@ function deleteOrder(req, res, next) {
 
   function deleteCustomerOrder() {
     var deferred = Q.defer();
-    connection.query('DELETE FROM customer_order WHERE id = ' + SqlString.escape(order.id)
+    connection.query('DELETE FROM customer_order WHERE id = ' + SqlString.escape(order.id) + ';'
       , function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       deferred.resolve();
     });
     return deferred.promise;
   }
 
   function resetStock() {
+    if (!order || !order.products || order.products.length === 0) return;
     var deferred = Q.defer();
     order.products.forEach(function(product) {
       connection.query('UPDATE product SET in_stock = true WHERE id = ' + SqlString.escape(product.id) + ';'
         , function(error, results, fields) {
-        if (error) throw error;
+        if (error) deferred.reject(error);
         deferred.resolve();
       });
     });
@@ -358,7 +364,7 @@ function deleteProductFromOrder(req, res, next) {
     var deferred = Q.defer();
     connection.query('DELETE FROM order_inventory WHERE order_id = ' + orderId + ' AND product_id = ' + productId + ';'
       , function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       deferred.resolve();
     });
     return deferred.promise;
@@ -368,7 +374,7 @@ function deleteProductFromOrder(req, res, next) {
     var deferred = Q.defer();
     connection.query('UPDATE product SET in_stock = true WHERE id = ' + productId + ';'
       , function(error, results, fields) {
-      if (error) throw error;
+      if (error) deferred.reject(error);
       deferred.resolve();
     });
     return deferred.promise;
