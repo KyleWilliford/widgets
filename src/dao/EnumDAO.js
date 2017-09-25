@@ -8,18 +8,22 @@ const config = require('../config/DatabaseConfiguration');
 const mysql = require('mysql');
 const Q = require('q');
 
-/*
-* GET all product types from the product_type_enum table 
+/**
+* GET all product types from the product_type_enum table
 * and return them as an array of WidgetType objects.
 * @param {object} req The HTTP request object.
 * @param {object} res The HTTP response object.
-* @param {function} next The next function to call in the middleware chain. 
+* @param {function} next The next function to call in the middleware chain.
 */
 function getTypes(req, res, next) {
   console.log(req.body);
   let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let types = [];
+  /**
+  * Select all product types from the product_type_enum table.
+  * @return {object} A Q promise.
+  */
   function getProductTypes() {
     let deferred = Q.defer();
     connection.query(
@@ -51,12 +55,23 @@ function getTypes(req, res, next) {
     });
 }
 
+/**
+* GET all product sizes from the size table.
+* and return them as an array of Size objects.
+* @param {object} req The HTTP request object.
+* @param {object} res The HTTP response object.
+* @param {function} next The next function to call in the middleware chain.
+*/
 function getSizes(req, res, next) {
   console.log(req.body);
   let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let sizes = [];
-  function _getSizes() {
+  /**
+  * Select all product sizes from the size table.
+  * @return {object} A Q promise.
+  */
+  function getProductSizes() {
     let deferred = Q.defer();
     connection.query(
     `SELECT
@@ -77,7 +92,7 @@ function getSizes(req, res, next) {
     return deferred.promise;
   }
 
-  Q.fcall(_getSizes)
+  Q.fcall(getProductSizes)
     .catch(function(error) {
       console.log(error);
       res.status(400).send(error);
@@ -87,12 +102,23 @@ function getSizes(req, res, next) {
     });
 }
 
+/**
+* GET all product finishes from the finish table.
+* and return them as an array of WidgetType objects.
+* @param {object} req The HTTP request object.
+* @param {object} res The HTTP response object.
+* @param {function} next The next function to call in the middleware chain.
+*/
 function getFinishes(req, res, next) {
   console.log(req.body);
   let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let finishes = [];
-  function _getFinishes() {
+  /**
+  * Select all product finishes from the finish table.
+  * @return {object} A Q promise.
+  */
+  function getProductFinishes() {
     let deferred = Q.defer();
     connection.query(
     `SELECT
@@ -114,7 +140,7 @@ function getFinishes(req, res, next) {
     return deferred.promise;
   }
 
-  Q.fcall(_getFinishes)
+  Q.fcall(getProductFinishes)
     .catch(function(error) {
       console.log(error);
       res.status(400).send(error);
