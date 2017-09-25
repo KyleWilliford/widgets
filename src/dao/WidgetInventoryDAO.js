@@ -1,20 +1,29 @@
+/*
+* DAO functions for working with widget relations.
+*/
 let Size = require('../model/Size.js');
 let Finish = require('../model/Finish.js');
 let WidgetType = require('../model/WidgetType.js');
-let Widget = require('../model/Widget.js');
-let WidgetExtremeEdition = require('../model/WidgetExtremeEdition.js');
-let WidgetPrime = require('../model/WidgetPrime.js');
-let WidgetElite = require('../model/WidgetElite.js');
 let WidgetFactory = require('../factory/WidgetFactory.js');
 let config = require('../config/DatabaseConfiguration');
 let mysql = require('mysql');
 let SqlString = require('sqlstring');
 let Q = require('q');
 
+/**
+* GET all widget products and return them as an array of Product objects.
+* @param {object} req The HTTP request object.
+* @param {object} res The HTTP response object.
+* @param {function} next The next function to call in the middleware chain.
+*/
 function getAllWidgets(req, res, next) {
   let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let widgets = [];
+  /**
+  * Select all widgets from the product table.
+  * @return {object} A Q promise.
+  */
   function getWidgets() {
     let deferred = Q.defer();
     connection.query(
@@ -63,20 +72,31 @@ function getAllWidgets(req, res, next) {
     });
 }
 
+/**
+* POST a new widget product and return the Product object.
+* @param {object} req The HTTP request object.
+* @param {object} res The HTTP response object.
+* @param {function} next The next function to call in the middleware chain.
+*/
 function createWidget(req, res, next) {
   let widget = req.body;
   console.log(widget);
   let connection = mysql.createConnection(config.getConnectionConfigObject());
 
-  let sql = 'INSERT INTO product (name, product_type_id, finish_id, size_id) VALUES (' +
-      SqlString.escape(widget.name) + ',' +
-      SqlString.escape(widget.type.id) + ',' +
-      SqlString.escape(widget.finish.id) + ',' +
-      SqlString.escape(widget.size.id) + ');';
-      console.log(sql);
+  /**
+  * Insert a new widget into the product table.
+  * @return {object} A Q promise.
+  */
   function createWidget() {
     let deferred = Q.defer();
-    connection.query(sql, function(error, results, fields) {
+    connection.query(
+      `INSERT INTO product 
+      (name, product_type_id, finish_id, size_id) 
+      VALUES (${SqlString.escape(widget.name)},
+      ${SqlString.escape(widget.type.id)},
+      ${SqlString.escape(widget.finish.id)},
+      ${SqlString.escape(widget.size.id)});`
+      , function(error, results, fields) {
       if (error) deferred.reject(error);
       deferred.resolve();
     });
@@ -93,33 +113,53 @@ function createWidget(req, res, next) {
     });
 }
 
+/**
+* private function to build a search query string that takes parameters for the where clause.
+* @param {string} name The column to use in the where clause, e.g. 's.name'
+* @param {string} value The value to use in the where caluse.
+* @return {string} The query string.
+*/
+function createSearchQueryString(name, value) {
+  return `SELECT
+    p.id AS productId,
+    p.name AS productName,
+    p.in_stock AS inStock,
+    t.id AS typeId,
+    t.name AS typeName,
+    s.id AS sizeId,
+    s.name AS sizeName,
+    f.id AS finishId,
+    f.name AS finishName,
+    f.hex_code AS finishHexCode
+  FROM product p
+  INNER JOIN product_type_enum t ON p.product_type_id = t.id
+  INNER JOIN finish f ON p.finish_id = f.id
+  INNER JOIN size s ON p.size_id = s.id
+  WHERE ${name} = ${value}
+  ORDER BY productId ASC;`;
+}
+
+/**
+* GET all widget products with a specified size and return an array of Product objects.
+* @param {object} req The HTTP request object.
+* @param {object} res The HTTP response object.
+* @param {function} next The next function to call in the middleware chain.
+*/
 function getWidgetsBySize(req, res, next) {
   let name = SqlString.escape(req.body.name);
   console.log(name);
   let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let widgets = [];
-  let sql = `SELECT
-      p.id AS productId,
-      p.name AS productName,
-      p.in_stock AS inStock,
-      t.id AS typeId,
-      t.name AS typeName,
-      s.id AS sizeId,
-      s.name AS sizeName,
-      f.id AS finishId,
-      f.name AS finishName,
-      f.hex_code AS finishHexCode
-    FROM product p
-    INNER JOIN product_type_enum t ON p.product_type_id = t.id
-    INNER JOIN finish f ON p.finish_id = f.id
-    INNER JOIN size s ON p.size_id = s.id
-    WHERE s.name = ${name}
-    ORDER BY productId ASC;`;
-  console.log(sql);
+  /**
+  * Select widgets with the given size
+  * @return {object} A Q promise.
+  */
   function getWidgets() {
     let deferred = Q.defer();
-    connection.query(sql, function(error, results, fields) {
+    connection.query(
+    createSearchQueryString('s.name', name)
+    , function(error, results, fields) {
       if (error) deferred.reject(error);
       console.log(results);
       results.forEach(function(result) {
@@ -149,33 +189,27 @@ function getWidgetsBySize(req, res, next) {
     });
 }
 
+/**
+* GET all widget products with a specified type and return an array of Product objects.
+* @param {object} req The HTTP request object.
+* @param {object} res The HTTP response object.
+* @param {function} next The next function to call in the middleware chain.
+*/
 function getWidgetsByType(req, res, next) {
   let name = SqlString.escape(req.body.name);
   console.log(name);
   let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let widgets = [];
-  let sql = `SELECT
-      p.id AS productId,
-      p.name AS productName,
-      p.in_stock AS inStock,
-      t.id AS typeId,
-      t.name AS typeName,
-      s.id AS sizeId,
-      s.name AS sizeName,
-      f.id AS finishId,
-      f.name AS finishName,
-      f.hex_code AS finishHexCode
-    FROM product p
-    INNER JOIN product_type_enum t ON p.product_type_id = t.id
-    INNER JOIN finish f ON p.finish_id = f.id
-    INNER JOIN size s ON p.size_id = s.id
-    WHERE t.name = ${name}
-    ORDER BY productId ASC;`;
-  console.log(sql);
+  /**
+  * Select widgets with the given type
+  * @return {object} A Q promise.
+  */
   function getWidgets() {
     let deferred = Q.defer();
-    connection.query(sql, function(error, results, fields) {
+    connection.query(
+    createSearchQueryString('t.name', name)
+    , function(error, results, fields) {
       if (error) deferred.reject(error);
       console.log(results);
       results.forEach(function(result) {
@@ -205,33 +239,27 @@ function getWidgetsByType(req, res, next) {
     });
 }
 
+/**
+* GET all widget products with a specified finish and return an array of Product objects.
+* @param {object} req The HTTP request object.
+* @param {object} res The HTTP response object.
+* @param {function} next The next function to call in the middleware chain.
+*/
 function getWidgetsByFinish(req, res, next) {
   let name = SqlString.escape(req.body.name);
   console.log(name);
   let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let widgets = [];
-  let sql = `SELECT
-      p.id AS productId,
-      p.name AS productName,
-      p.in_stock AS inStock,
-      t.id AS typeId,
-      t.name AS typeName,
-      s.id AS sizeId,
-      s.name AS sizeName,
-      f.id AS finishId,
-      f.name AS finishName,
-      f.hex_code AS finishHexCode
-    FROM product p
-    INNER JOIN product_type_enum t ON p.product_type_id = t.id
-    INNER JOIN finish f ON p.finish_id = f.id
-    INNER JOIN size s ON p.size_id = s.id
-    WHERE f.name = ${name}
-    ORDER BY productId ASC;`;
-  console.log(sql);
+  /**
+  * Select widgets with the given finish
+  * @return {object} A Q promise.
+  */
   function getWidgets() {
     let deferred = Q.defer();
-    connection.query(sql, function(error, results, fields) {
+    connection.query(
+    createSearchQueryString('f.name', name)
+    , function(error, results, fields) {
       if (error) deferred.reject(error);
       console.log(results);
       results.forEach(function(result) {
@@ -261,33 +289,27 @@ function getWidgetsByFinish(req, res, next) {
     });
 }
 
+/**
+* GET all widget products with a specified name and return an array of Product objects.
+* @param {object} req The HTTP request object.
+* @param {object} res The HTTP response object.
+* @param {function} next The next function to call in the middleware chain.
+*/
 function getWidgetsByName(req, res, next) {
   let name = SqlString.escape(req.body.name);
   console.log(name);
   let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let widgets = [];
-  let sql = `SELECT
-      p.id AS productId,
-      p.name AS productName,
-      p.in_stock AS inStock,
-      t.id AS typeId,
-      t.name AS typeName,
-      s.id AS sizeId,
-      s.name AS sizeName,
-      f.id AS finishId,
-      f.name AS finishName,
-      f.hex_code AS finishHexCode
-    FROM product p
-    INNER JOIN product_type_enum t ON p.product_type_id = t.id
-    INNER JOIN finish f ON p.finish_id = f.id
-    INNER JOIN size s ON p.size_id = s.id
-    WHERE p.name = ${name}
-    ORDER BY productId ASC;`;
-  console.log(sql);
+  /**
+  * Select widgets with the given name
+  * @return {object} A Q promise.
+  */
   function getWidgets() {
     let deferred = Q.defer();
-    connection.query(sql, function(error, results, fields) {
+    connection.query(
+    createSearchQueryString('p.name', name)
+    , function(error, results, fields) {
       if (error) deferred.reject(error);
       console.log(results);
       results.forEach(function(result) {
@@ -317,6 +339,12 @@ function getWidgetsByName(req, res, next) {
     });
 }
 
+/**
+* GET an array of supported search types.
+* @param {object} req The HTTP request object.
+* @param {object} res The HTTP response object.
+* @param {function} next The next function to call in the middleware chain.
+*/
 function getSupportedSearchTypes(req, res, next) {
   res.send([
     'name', 'size', 'finish', 'type',
