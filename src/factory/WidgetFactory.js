@@ -11,7 +11,7 @@ let WidgetElite = require('../model/WidgetElite.js');
 * @param {number} id The widget identifier
 * @param {object} size A Size object.
 * @param {object} finish A Finish object.
-* @param {string} name Thr widget name.
+* @param {string} name The widget name.
 * @param {object} type A WidgetType object.
 * @param {boolean} inStock True if the widget is in stock.
 * @return {object} The constructed Widget object.
