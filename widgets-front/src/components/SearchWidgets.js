@@ -38,7 +38,7 @@ export default class SearchWidgets extends React.Component {
       <form onSubmit={this.submitSearch}>
         <label>
           Search by: 
-          <select className="margin=5px" onChange={this.selectedSearchTypeChange} value={this.state.selectedSearchType}>
+          <select className="margin-5px" onChange={this.selectedSearchTypeChange} value={this.state.selectedSearchType}>
             {searchTypes.map((searchType, index) =>
               <option key={index} value={searchType}>{searchType}</option>
             )}

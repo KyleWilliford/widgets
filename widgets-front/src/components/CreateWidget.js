@@ -13,7 +13,7 @@ export default class CreateWidget extends React.Component {
   }
 
   componentDidMount() {
-    // TODO optimize by making one call instead of n calls
+    // TODO make one call instead of 3 calls
     fetch('/enums/types')
       .then(res => res.json())
       .then(types => { 
@@ -58,7 +58,7 @@ export default class CreateWidget extends React.Component {
 
   submitNewWidget(event) {
     console.log('A new widget was submitted with name: ' + this.state.value);
-    let name = this.state.value.substring(0, 64); // name field only supports 64 characters
+    let name = this.state.value.substring(0, 64); // name field is constrained to 64 characters
     if(!name) {
       name = 'Unknown';
     }
@@ -100,17 +100,17 @@ export default class CreateWidget extends React.Component {
     return (
       <div>
         <div><h4>Create A New Product</h4></div>
-        <select className="margin=5px" onChange={this.typeChange} value={this.state.typeId}>
+        <select className="margin-5px" onChange={this.typeChange} value={this.state.typeId}>
           {types.map(type =>
             <option key={type.id} value={type.id}>{type.name}</option>
           )}
         </select>
-        <select className="margin=5px" onChange={this.sizeChange} value={this.state.sizeId}>
+        <select className="margin-5px" onChange={this.sizeChange} value={this.state.sizeId}>
           {sizes.map(size =>
             <option key={size.id} value={size.id}>{size.name}</option>
           )}
         </select>
-        <select className="margin=5px" onChange={this.finishChange} value={this.state.finishId}>
+        <select className="margin-5px" onChange={this.finishChange} value={this.state.finishId}>
           {finishes.map(finish =>
             <option key={finish.id} value={finish.id}>{finish.name}</option>
           )}

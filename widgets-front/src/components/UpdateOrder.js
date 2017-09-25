@@ -69,6 +69,7 @@ export default class UpdateOrder extends React.Component {
   }
 
   submitUpdatedOrder() {
+    this.addProductToOrder();
     let order = this.props.order;
     order.products = order.products.concat(this.state.selectedProducts);
     this.props.sendUpdatedOrder(order);
@@ -80,36 +81,14 @@ export default class UpdateOrder extends React.Component {
     const availableProducts = this.state.availableProducts;
     const selectedProducts = this.state.selectedProducts;
     return (
-      <div><h4>Update This Order</h4>
+      <div><h5>Update This Order</h5>
         <span className="margin-5px">Choose a product to add to the order:</span>
-        <select className="margin=5px" onChange={this.productSelectedChange} value={this.state.productId}>
+        <select className="margin-5px" onChange={this.productSelectedChange} value={this.state.productId}>
           {availableProducts.map(product =>
             <option key={product.id} value={product.id}>id:{product.id} {product.name} {product.size.name} {product.finish.name} {product.type.name}</option>
           )}
         </select>
-        <button className="margin-5px" onClick={this.addProductToOrder}>Add To Order</button>
-        <div>
-          {selectedProducts.length !== 0 && 
-            <div>
-              <table className="new-order-table">
-                <tbody>
-                  <tr><td>ID</td><td>Name</td><td>Type</td><td>Size</td><td>Finish</td><td>Remove?</td></tr>
-                  {selectedProducts.map(product =>
-                    <tr key={product.id}>
-                      <td>{product.id}</td>
-                      <td>{product.name}</td>
-                      <td>{product.type.name}</td>
-                      <td>{product.size.name}</td>
-                      <td>{product.finish.name}</td>
-                      <td><button onClick={this.removeProductFromOrder.bind(this, product.id)}>Remove</button></td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-              <button className="margin-5px" onClick={this.submitUpdatedOrder}>Update Order</button>
-            </div>
-          }
-        </div>
+        <button className="margin-5px" onClick={this.submitUpdatedOrder}>Add To Order</button>
       </div>
     );
   }

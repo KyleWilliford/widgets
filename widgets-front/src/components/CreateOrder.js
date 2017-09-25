@@ -84,7 +84,7 @@ export default class CreateOrder extends React.Component {
       <div>
         <h2>Create An Order</h2>
         <span className="margin-5px">Choose a product to add to the order:</span>
-        <select className="margin=5px" onChange={this.productSelectedChange} value={this.state.productId}>
+        <select className="margin-5px" onChange={this.productSelectedChange} value={this.state.productId}>
           {availableProducts.map(product =>
             <option key={product.id} value={product.id}>id:{product.id} {product.name} {product.size.name} {product.finish.name} {product.type.name}</option>
           )}
