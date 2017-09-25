@@ -1,5 +1,5 @@
 /*
-* DAO functions for working with enum relations.
+* DAO functions for working with enum product relations.
 */
 const Size = require('../model/Size.js');
 const Finish = require('../model/Finish.js');
