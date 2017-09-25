@@ -1,7 +1,13 @@
-function Product(id, name, inStock) {
+/*
+* Product class. Abstract base class.
+*/
+var Product = function(id, name, inStock) {
+  if (this.constructor === Product) {
+    throw new Error("Can't instantiate this abstract class!");
+  }
   this.id = id;
   this.name = name;
   this.inStock = inStock;
-}
+};
 
 module.exports = Product;

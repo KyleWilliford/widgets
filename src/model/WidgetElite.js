@@ -1,3 +1,6 @@
+/*
+* WidgetElite class. Subclass of Widget.
+*/
 let Widget = require('./Widget.js');
 
 function WidgetElite(id, size, finish, name, type, inStock) {

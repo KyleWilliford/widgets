@@ -1,3 +1,6 @@
+/*
+* Product Order class.
+*/
 function Order(id, products, orderDate, orderUpdated, status) {
   this.id = id;
   this.products = products || [];

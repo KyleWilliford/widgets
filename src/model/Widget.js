@@ -1,3 +1,6 @@
+/*
+* Widget class. Subclass of Product.
+*/
 let Product = require('./Product.js');
 
 function Widget(id, size, finish, name, type, inStock) {

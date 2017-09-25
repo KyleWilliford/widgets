@@ -1,3 +1,6 @@
+/*
+* Widget finish attribute class.
+*/
 function Finish(id, name, colorCode) {
   this.id = id;
   this.name = name;

@@ -1,3 +1,6 @@
+/*
+* WidgetExtremeEdition class. Subclass of Widget.
+*/
 let Widget = require('./Widget.js');
 
 function WidgetExtremeEdition(id, size, finish, name, type, inStock) {
