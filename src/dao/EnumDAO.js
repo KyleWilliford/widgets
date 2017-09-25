@@ -1,25 +1,27 @@
 /*
 * DAO functions for working with enum relations.
 */
-var Size = require('../model/Size.js');
-var Finish = require('../model/Finish.js');
-var WidgetType = require('../model/WidgetType.js');
-var config = require('../config/DatabaseConfiguration');
-var mysql = require('mysql');
-var SqlString = require('sqlstring');
-var Q = require('q');
+const Size = require('../model/Size.js');
+const Finish = require('../model/Finish.js');
+const WidgetType = require('../model/WidgetType.js');
+const config = require('../config/DatabaseConfiguration');
+const mysql = require('mysql');
+const Q = require('q');
 
 /*
-* GET all product types from the product_type_enum table and return them as an array of WidgetType objects.
-* @
+* GET all product types from the product_type_enum table 
+* and return them as an array of WidgetType objects.
+* @param {object} req The HTTP request object.
+* @param {object} res The HTTP response object.
+* @param {function} next The next function to call in the middleware chain. 
 */
 function getTypes(req, res, next) {
   console.log(req.body);
-  var connection = mysql.createConnection(config.getConnectionConfigObject());
+  let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let types = [];
   function getProductTypes() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query(
     `SELECT
       id,
@@ -45,17 +47,17 @@ function getTypes(req, res, next) {
       res.status(400).send(error);
     })
     .done(function() {
-      if(!res.headersSent) res.send(types);
+      if (!res.headersSent) res.send(types);
     });
 }
 
 function getSizes(req, res, next) {
   console.log(req.body);
-  var connection = mysql.createConnection(config.getConnectionConfigObject());
+  let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let sizes = [];
   function _getSizes() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query(
     `SELECT
       id,
@@ -81,17 +83,17 @@ function getSizes(req, res, next) {
       res.status(400).send(error);
     })
     .done(function() {
-      if(!res.headersSent) res.send(sizes);
+      if (!res.headersSent) res.send(sizes);
     });
 }
 
 function getFinishes(req, res, next) {
   console.log(req.body);
-  var connection = mysql.createConnection(config.getConnectionConfigObject());
+  let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let finishes = [];
   function _getFinishes() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query(
     `SELECT
       id,
@@ -118,12 +120,12 @@ function getFinishes(req, res, next) {
       res.status(400).send(error);
     })
     .done(function() {
-      if(!res.headersSent) res.send(finishes);
+      if (!res.headersSent) res.send(finishes);
     });
 }
 
 module.exports = {
   getTypes: getTypes,
   getSizes: getSizes,
-  getFinishes: getFinishes
+  getFinishes: getFinishes,
 };

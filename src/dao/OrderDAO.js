@@ -1,23 +1,23 @@
-var Size = require('../model/Size.js');
-var Finish = require('../model/Finish.js');
-var WidgetType = require('../model/WidgetType.js');
-var Widget = require('../model/Widget.js');
-var WidgetExtremeEdition = require('../model/WidgetExtremeEdition.js');
-var WidgetPrime = require('../model/WidgetPrime.js');
-var WidgetElite = require('../model/WidgetElite.js');
-var WidgetFactory = require('../factory/WidgetFactory.js');
-var Order = require('../model/Order.js');
-var config = require('../config/DatabaseConfiguration');
-var mysql = require('mysql');
-var SqlString = require('sqlstring');
-var Q = require('q');
+let Size = require('../model/Size.js');
+let Finish = require('../model/Finish.js');
+let WidgetType = require('../model/WidgetType.js');
+let Widget = require('../model/Widget.js');
+let WidgetExtremeEdition = require('../model/WidgetExtremeEdition.js');
+let WidgetPrime = require('../model/WidgetPrime.js');
+let WidgetElite = require('../model/WidgetElite.js');
+let WidgetFactory = require('../factory/WidgetFactory.js');
+let Order = require('../model/Order.js');
+let config = require('../config/DatabaseConfiguration');
+let mysql = require('mysql');
+let SqlString = require('sqlstring');
+let Q = require('q');
 
 function getAllOrders(req, res, next) {
-  var connection = mysql.createConnection(config.getConnectionConfigObject());
+  let connection = mysql.createConnection(config.getConnectionConfigObject());
 
-  var orders = [];
+  let orders = [];
   function getOrders() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query(
     `SELECT
       o.id AS orderId,
@@ -39,7 +39,7 @@ function getAllOrders(req, res, next) {
   }
 
   function getProductsInOrders() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query(
     `SELECT
       oi.order_id AS orderId,
@@ -91,18 +91,18 @@ function getAllOrders(req, res, next) {
       res.status(400).send(error);
     })
     .done(function() {
-      if(!res.headersSent) res.send(orders);
+      if (!res.headersSent) res.send(orders);
     });
 }
 
 function updateOrder(req, res, next) {
   console.log(req.body);
-  var order = req.body;
-  var connection = mysql.createConnection(config.getConnectionConfigObject());
+  let order = req.body;
+  let connection = mysql.createConnection(config.getConnectionConfigObject());
 
-  var currentProductIds = [];
+  let currentProductIds = [];
   function getCurrentOrderProducts() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query('SELECT p.id FROM product p INNER JOIN order_inventory oi ON oi.product_id = p.id WHERE oi.order_id = ' + SqlString.escape(order.id) + ';'
       , function(error, results, fields) {
         if (error) deferred.reject(error);
@@ -116,7 +116,7 @@ function updateOrder(req, res, next) {
 
   function checkIfProductsAreInStock() {
     if (!order || !order.products || order.products.length === 0) return;
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     order.products.forEach(function(product) {
       connection.query('SELECT in_stock as inStock FROM product WHERE id = ' + SqlString.escape(product.id) + ';'
         , function(error, results, fields) {
@@ -135,7 +135,7 @@ function updateOrder(req, res, next) {
 
   function updateStatus() {
     if (!order || !order.order_status_id) return;
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query('UPDATE customer_order SET order_status_id = ' + SqlString.escape(order.order_status_id)
        + ' WHERE id = ' + SqlString.escape(order.id) + ';'
        , function(error, results, fields) {
@@ -146,7 +146,7 @@ function updateOrder(req, res, next) {
   }
 
   function resetProducts() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query('DELETE FROM order_inventory WHERE order_id = ' + SqlString.escape(order.id) + ';'
       , function(error, results, fields) {
       if (error) deferred.reject(error);
@@ -157,7 +157,7 @@ function updateOrder(req, res, next) {
 
   function resetStock() {
     if (currentProductIds.length === 0) return;
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     currentProductIds.forEach(function(productId) {
       connection.query('UPDATE product SET in_stock = true WHERE id = ' + SqlString.escape(productId) + ';'
         , function(error, results, fields) {
@@ -170,7 +170,7 @@ function updateOrder(req, res, next) {
 
   function insertOrderInventory() {
     if (!order || !order.products || order.products.length === 0) return;
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     order.products.forEach(function(product) {
       connection.query('INSERT INTO order_inventory (order_id, product_id) VALUES (' + SqlString.escape(order.id) + ',' + SqlString.escape(product.id) + ');'
         , function(error, results, fields) {
@@ -183,7 +183,7 @@ function updateOrder(req, res, next) {
 
   function updateStock() {
     if (!order || !order.products || order.products.length === 0) return;
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     order.products.forEach(function(product) {
       connection.query('UPDATE product SET in_stock = false WHERE id = ' + SqlString.escape(product.id) + ';'
         , function(error, results, fields) {
@@ -206,17 +206,17 @@ function updateOrder(req, res, next) {
       res.status(400).send(error);
     })
     .done(function() {
-      if(!res.headersSent) res.send(order);
+      if (!res.headersSent) res.send(order);
     });
 }
 
 function createOrder(req, res, next) {
   console.log(req.body);
-  var order = req.body;
-  var connection = mysql.createConnection(config.getConnectionConfigObject());
+  let order = req.body;
+  let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   function createCustomerOrder() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     // All new orders start off with status 1 = Pending
     connection.query('INSERT INTO customer_order (order_status_id) VALUES (1);'
       , function(error, results, fields) {
@@ -227,7 +227,7 @@ function createOrder(req, res, next) {
   }
 
   function getLastOrderId() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     // All new orders start off with status 1 = Pending
     connection.query('SELECT LAST_INSERT_ID() AS orderId;'
       , function(error, results, fields) {
@@ -243,7 +243,7 @@ function createOrder(req, res, next) {
 
   function insertOrderInventory() {
     if (!order || !order.products || order.products.length === 0) return;
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     order.products.forEach(function(product) {
       connection.query('INSERT INTO order_inventory (order_id, product_id) VALUES (' + SqlString.escape(order.id) + ',' + SqlString.escape(product.id) + ');'
         , function(error, results, fields) {
@@ -256,7 +256,7 @@ function createOrder(req, res, next) {
 
   function updateStock() {
     if (!order || !order.products || order.products.length === 0) return;
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     order.products.forEach(function(product) {
       connection.query('UPDATE product SET in_stock = false WHERE id = ' + SqlString.escape(product.id) + ';'
         , function(error, results, fields) {
@@ -276,17 +276,17 @@ function createOrder(req, res, next) {
       res.status(400).send(error);
     })
     .done(function() {
-      if(!res.headersSent) res.send(order);
+      if (!res.headersSent) res.send(order);
     });
 }
 
 function deleteOrder(req, res, next) {
   console.log(req.body);
-  var order = req.body;
-  var connection = mysql.createConnection(config.getConnectionConfigObject());
+  let order = req.body;
+  let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   function deleteOrderInventory() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query('DELETE FROM order_inventory WHERE order_id = ' + SqlString.escape(order.id) + ';'
       , function(error, results, fields) {
       if (error) deferred.reject(error);
@@ -296,7 +296,7 @@ function deleteOrder(req, res, next) {
   }
 
   function deleteCustomerOrder() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query('DELETE FROM customer_order WHERE id = ' + SqlString.escape(order.id) + ';'
       , function(error, results, fields) {
       if (error) deferred.reject(error);
@@ -307,7 +307,7 @@ function deleteOrder(req, res, next) {
 
   function resetStock() {
     if (!order || !order.products || order.products.length === 0) return;
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     order.products.forEach(function(product) {
       connection.query('UPDATE product SET in_stock = true WHERE id = ' + SqlString.escape(product.id) + ';'
         , function(error, results, fields) {
@@ -326,19 +326,19 @@ function deleteOrder(req, res, next) {
       res.status(400).send(error);
     })
     .done(function() {
-      if(!res.headersSent) res.send(order);
+      if (!res.headersSent) res.send(order);
     });
 }
 
 function deleteProductFromOrder(req, res, next) {
-  var orderId = SqlString.escape(req.body.orderId);
+  let orderId = SqlString.escape(req.body.orderId);
   console.log(orderId);
-  var productId = SqlString.escape(req.body.productId);
+  let productId = SqlString.escape(req.body.productId);
   console.log(productId);
-  var connection = mysql.createConnection(config.getConnectionConfigObject());
+  let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   function deleteOrderInventory() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query('DELETE FROM order_inventory WHERE order_id = ' + orderId + ' AND product_id = ' + productId + ';'
       , function(error, results, fields) {
       if (error) deferred.reject(error);
@@ -348,7 +348,7 @@ function deleteProductFromOrder(req, res, next) {
   }
 
   function resetStock() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query('UPDATE product SET in_stock = true WHERE id = ' + productId + ';'
       , function(error, results, fields) {
       if (error) deferred.reject(error);
@@ -364,7 +364,7 @@ function deleteProductFromOrder(req, res, next) {
       res.status(400).send(error);
     })
     .done(function() {
-      if(!res.headersSent) res.send(true);
+      if (!res.headersSent) res.send(true);
     });
 }
 
@@ -373,5 +373,5 @@ module.exports = {
   updateOrder: updateOrder,
   createOrder: createOrder,
   deleteOrder: deleteOrder,
-  deleteProductFromOrder: deleteProductFromOrder
+  deleteProductFromOrder: deleteProductFromOrder,
 };

@@ -1,7 +1,7 @@
-var Widget = require('../model/Widget.js');
-var WidgetExtremeEdition = require('../model/WidgetExtremeEdition.js');
-var WidgetPrime = require('../model/WidgetPrime.js');
-var WidgetElite = require('../model/WidgetElite.js');
+let Widget = require('../model/Widget.js');
+let WidgetExtremeEdition = require('../model/WidgetExtremeEdition.js');
+let WidgetPrime = require('../model/WidgetPrime.js');
+let WidgetElite = require('../model/WidgetElite.js');
 
 function createWidget(id, size, finish, name, type, inStock) {
   if (type.name === 'Widget') {

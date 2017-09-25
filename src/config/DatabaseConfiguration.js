@@ -6,10 +6,10 @@ const database = 'widgets';
 
 function getConnectionConfigObject() {
   return {
-    host     : host,
-    user     : user,
-    password : password,
-    database : database
+    host: host,
+    user: user,
+    password: password,
+    database: database,
   };
 }
 
@@ -18,5 +18,5 @@ module.exports = {
   user: user,
   host: host,
   password: password,
-  database: database
+  database: database,
 };

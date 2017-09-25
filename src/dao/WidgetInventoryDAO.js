@@ -1,22 +1,22 @@
-var Size = require('../model/Size.js');
-var Finish = require('../model/Finish.js');
-var WidgetType = require('../model/WidgetType.js');
-var Widget = require('../model/Widget.js');
-var WidgetExtremeEdition = require('../model/WidgetExtremeEdition.js');
-var WidgetPrime = require('../model/WidgetPrime.js');
-var WidgetElite = require('../model/WidgetElite.js');
-var WidgetFactory = require('../factory/WidgetFactory.js');
-var config = require('../config/DatabaseConfiguration');
-var mysql = require('mysql');
-var SqlString = require('sqlstring');
-var Q = require('q');
+let Size = require('../model/Size.js');
+let Finish = require('../model/Finish.js');
+let WidgetType = require('../model/WidgetType.js');
+let Widget = require('../model/Widget.js');
+let WidgetExtremeEdition = require('../model/WidgetExtremeEdition.js');
+let WidgetPrime = require('../model/WidgetPrime.js');
+let WidgetElite = require('../model/WidgetElite.js');
+let WidgetFactory = require('../factory/WidgetFactory.js');
+let config = require('../config/DatabaseConfiguration');
+let mysql = require('mysql');
+let SqlString = require('sqlstring');
+let Q = require('q');
 
 function getAllWidgets(req, res, next) {
-  var connection = mysql.createConnection(config.getConnectionConfigObject());
+  let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let widgets = [];
   function getWidgets() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query(
     `SELECT
       p.id AS productId,
@@ -59,14 +59,14 @@ function getAllWidgets(req, res, next) {
       res.status(400).send(error);
     })
     .done(function() {
-      if(!res.headersSent) res.send(widgets);
+      if (!res.headersSent) res.send(widgets);
     });
 }
 
 function createWidget(req, res, next) {
   let widget = req.body;
   console.log(widget);
-  var connection = mysql.createConnection(config.getConnectionConfigObject());
+  let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let sql = 'INSERT INTO product (name, product_type_id, finish_id, size_id) VALUES (' +
       SqlString.escape(widget.name) + ',' +
@@ -75,7 +75,7 @@ function createWidget(req, res, next) {
       SqlString.escape(widget.size.id) + ');';
       console.log(sql);
   function createWidget() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query(sql, function(error, results, fields) {
       if (error) deferred.reject(error);
       deferred.resolve();
@@ -89,14 +89,14 @@ function createWidget(req, res, next) {
       res.status(400).send(error);
     })
     .done(function() {
-      if(!res.headersSent) res.send(widget);
+      if (!res.headersSent) res.send(widget);
     });
 }
 
 function getWidgetsBySize(req, res, next) {
   let name = SqlString.escape(req.body.name);
   console.log(name);
-  var connection = mysql.createConnection(config.getConnectionConfigObject());
+  let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let widgets = [];
   let sql = `SELECT
@@ -118,7 +118,7 @@ function getWidgetsBySize(req, res, next) {
     ORDER BY productId ASC;`;
   console.log(sql);
   function getWidgets() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query(sql, function(error, results, fields) {
       if (error) deferred.reject(error);
       console.log(results);
@@ -145,14 +145,14 @@ function getWidgetsBySize(req, res, next) {
       res.status(400).send(error);
     })
     .done(function() {
-      if(!res.headersSent) res.send(widgets);
+      if (!res.headersSent) res.send(widgets);
     });
 }
 
 function getWidgetsByType(req, res, next) {
   let name = SqlString.escape(req.body.name);
   console.log(name);
-  var connection = mysql.createConnection(config.getConnectionConfigObject());
+  let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let widgets = [];
   let sql = `SELECT
@@ -174,7 +174,7 @@ function getWidgetsByType(req, res, next) {
     ORDER BY productId ASC;`;
   console.log(sql);
   function getWidgets() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query(sql, function(error, results, fields) {
       if (error) deferred.reject(error);
       console.log(results);
@@ -201,14 +201,14 @@ function getWidgetsByType(req, res, next) {
       res.status(400).send(error);
     })
     .done(function() {
-      if(!res.headersSent) res.send(widgets);
+      if (!res.headersSent) res.send(widgets);
     });
 }
 
 function getWidgetsByFinish(req, res, next) {
   let name = SqlString.escape(req.body.name);
   console.log(name);
-  var connection = mysql.createConnection(config.getConnectionConfigObject());
+  let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let widgets = [];
   let sql = `SELECT
@@ -230,7 +230,7 @@ function getWidgetsByFinish(req, res, next) {
     ORDER BY productId ASC;`;
   console.log(sql);
   function getWidgets() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query(sql, function(error, results, fields) {
       if (error) deferred.reject(error);
       console.log(results);
@@ -257,14 +257,14 @@ function getWidgetsByFinish(req, res, next) {
       res.status(400).send(error);
     })
     .done(function() {
-      if(!res.headersSent) res.send(widgets);
+      if (!res.headersSent) res.send(widgets);
     });
 }
 
 function getWidgetsByName(req, res, next) {
   let name = SqlString.escape(req.body.name);
   console.log(name);
-  var connection = mysql.createConnection(config.getConnectionConfigObject());
+  let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let widgets = [];
   let sql = `SELECT
@@ -286,7 +286,7 @@ function getWidgetsByName(req, res, next) {
     ORDER BY productId ASC;`;
   console.log(sql);
   function getWidgets() {
-    var deferred = Q.defer();
+    let deferred = Q.defer();
     connection.query(sql, function(error, results, fields) {
       if (error) deferred.reject(error);
       console.log(results);
@@ -313,7 +313,7 @@ function getWidgetsByName(req, res, next) {
       res.status(400).send(error);
     })
     .done(function() {
-      if(!res.headersSent) res.send(widgets);
+      if (!res.headersSent) res.send(widgets);
     });
 }
 
@@ -330,5 +330,5 @@ module.exports = {
   getWidgetsByType: getWidgetsByType,
   getWidgetsByFinish: getWidgetsByFinish,
   getWidgetsByName: getWidgetsByName,
-  getSupportedSearchTypes: getSupportedSearchTypes
+  getSupportedSearchTypes: getSupportedSearchTypes,
 };
