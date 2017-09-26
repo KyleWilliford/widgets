@@ -291,6 +291,55 @@ function createOrder(req, res, next) {
   let order = req.body;
   let connection = mysql.createConnection(config.getConnectionConfigObject());
 
+  let currentProductIds = [];
+  /**
+  * Select the products for an order where the order id matches a given id.
+  * @return {object} A Q promise.
+  */
+  function getCurrentOrderProducts() {
+    let deferred = Q.defer();
+    connection.query(
+      `SELECT p.id 
+      FROM product p 
+      INNER JOIN order_inventory oi ON oi.product_id = p.id 
+      WHERE oi.order_id = ${SqlString.escape(order.id)};`
+      , function(error, results, fields) {
+        if (error) deferred.reject(error);
+        results.forEach(function(result) {
+          currentProductIds.push(result.id);
+        });
+      deferred.resolve();
+    });
+    return deferred.promise;
+  }
+
+  /**
+  * Check if a product is in stock before trying to add it to an order.
+  * @return {object} A Q promise.
+  */
+  function checkIfProductsAreInStock() {
+    if (!order || !order.products || order.products.length === 0) return;
+    let deferred = Q.defer();
+    order.products.forEach(function(product) {
+      connection.query(
+        `SELECT in_stock as inStock 
+        FROM product 
+        WHERE id = ${SqlString.escape(product.id)};`
+        , function(error, results, fields) {
+          if (error) deferred.reject(error);
+          results.forEach(function(result) {
+            if (!result.inStock && !currentProductIds.includes(product.id)) {
+              // eslint-disable-next-line max-len
+              deferred.reject(`Product with id ${product.id} is not available.`);
+              return;
+            }
+          });
+        deferred.resolve();
+      });
+    });
+    return deferred.promise;
+  }
+
   /**
   * Create an order with the default status of "Pending".
   * @return {object} A Q promise.
@@ -366,7 +415,9 @@ function createOrder(req, res, next) {
     return deferred.promise;
   }
 
-  Q.fcall(createCustomerOrder)
+  Q.fcall(getCurrentOrderProducts)
+    .then(checkIfProductsAreInStock)
+    .then(createCustomerOrder)
     .then(getLastOrderId)
     .then(insertOrderInventory)
     .then(updateStock)

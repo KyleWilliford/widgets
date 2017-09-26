@@ -7,6 +7,7 @@ export default class App extends Component {
   constructor() {
     super()
     this.ordersChanged = this.ordersChanged.bind(this);
+    this.widgetsChanged = this.widgetsChanged.bind(this);
   }
 
   componentDidMount() {
@@ -14,6 +15,10 @@ export default class App extends Component {
 
   ordersChanged() {
     this.refs.widgetTable.update();
+  }
+
+  widgetsChanged() {
+    this.refs.orderList.update();
   }
 
   render() {
@@ -25,10 +30,10 @@ export default class App extends Component {
         </div>
         <div className="pad-left">
           <div>
-            <OrderList ordersChanged = {this.ordersChanged} />
+            <OrderList ref="orderList" ordersChanged = {this.ordersChanged} />
           </div>
           <div id="widgetTable">
-            <WidgetTable ref="widgetTable" />
+            <WidgetTable ref="widgetTable" widgetsChanged = {this.widgetsChanged} />
           </div>
         </div>
       </div>

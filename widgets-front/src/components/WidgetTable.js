@@ -24,7 +24,6 @@ export default class WidgetTable extends React.Component {
   }
 
   search(what, value) {
-    console.log('search called on: ' + what + ' with value: ' + value);
     fetch('/search/widgets/' + what, {
       method: 'POST',
       headers: {
@@ -38,7 +37,6 @@ export default class WidgetTable extends React.Component {
   }
 
   newWidget(widget) {
-    console.log(widget);
     fetch('/widgets', {
       method: 'POST',
       headers: {
@@ -47,7 +45,8 @@ export default class WidgetTable extends React.Component {
       },
       body: JSON.stringify(widget)
     })
-    .then(response => this.update());
+    .then(response => this.update())
+    .then(response => this.props.widgetsChanged());
   }
 
   render() {

@@ -79,7 +79,6 @@ export default class UpdateOrder extends React.Component {
 
   render() {
     const availableProducts = this.state.availableProducts;
-    const selectedProducts = this.state.selectedProducts;
     return (
       <div><h5>Update This Order</h5>
         <span className="margin-5px">Choose a product to add to the order:</span>

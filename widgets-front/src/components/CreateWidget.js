@@ -57,7 +57,6 @@ export default class CreateWidget extends React.Component {
   }
 
   submitNewWidget(event) {
-    console.log('A new widget was submitted with name: ' + this.state.value);
     let name = this.state.value.substring(0, 64); // name field is constrained to 64 characters
     if(!name) {
       name = 'Unknown';

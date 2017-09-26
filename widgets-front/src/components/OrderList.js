@@ -22,7 +22,15 @@ export default class OrderList extends React.Component {
   update() {
     fetch('/orders')
       .then(res => res.json())
-      .then(orders => this.setState({ orders }));
+      .then(orders => this.setState({ orders }))
+      .then(response => this.refs.createOrderRef.update())
+      .then(response => {
+        Object.keys(this.refs).forEach(updateOrderRef => {
+          if(updateOrderRef !== 'self') {
+          this.refs[updateOrderRef].update();
+           }
+        });
+      });
   }
 
   deleteOrder(order) {
