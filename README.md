@@ -50,8 +50,39 @@ Using forever (default port is 3001):
 `$ npm start`
 
 Using forever (default port is 3000):
-`forever start -c "npm start" ./`
+`$ forever start -c "npm start" ./`
 
+# Web site
+The front end should be viewable at:
+
+`http://localhost:3000`
+
+# REST services
+
+By default, all services are available on <b>port 3001</b>. Example: `http://localhost:3001/widgets`. All responses are in JSON, and expected input is also JSON attached to the body of the request.
+- `/search/widgets/size` Post a search of widgets by size.
+  - Example Input `$ curl -H 'Content-Type: application/json' -X POST -d '{"name": "Invisibly Small"}' http://localhost:3001/search/widgets/size`
+- POST `/search/widgets/type` Post a search of widgets by type.
+  - Example Input `$ curl -H 'Content-Type: application/json' -X POST -d '{"name": "Widget Prime"}' http://localhost:3001/search/widgets/type`
+- POST `/search/widgets/finish` Post a search of widgets by finish.
+  - Example Input `$ curl -H 'Content-Type: application/json' -X POST -d '{"name": "green"}' http://localhost:3001/search/widgets/finish`
+- POST `/search/widgets/name` Post a search of widgets by name.
+  - Example Input `$ curl -H 'Content-Type: application/json' -X POST -d '{"name": "Widget"}' http://localhost:3001/search/widgets/name`
+- GET `/widgets` Get an array of all widget objects.
+  - Example Input `$ curl http://localhost:3001/widgets`
+- POST `/widgets` Post a new widget.
+- GET `/orders` Get an array of all order objects.
+  - Example Input `$ curl http://localhost:3001/orders`
+- POST `/orders` Post a new order.
+- PUT `/orders` Update an existing order.
+- DELETE `/orders` Delete an order.
+  - Example Input `$ curl -H 'Content-Type: application/json' -X DELETE -d '{"id": 4}' http://localhost:3001/orders`
+- DELETE `/order/product` Delete a product in an order.
+  - Example Input `$ curl -H 'Content-Type: application/json' -X DELETE -d '{"orderId": 12, "productId": 25}' http://localhost:3001/order/product`
+- GET `/supported-search-types` Get an array of supported search types.
+- GET `/enums/types` Get an array of all type objects.
+- GET `/enums/sizes` Get an array of all size objects.
+- GET `/enums/finishes` Get an array of all finish objects.
 
 # Future Improvements / Changes
 
