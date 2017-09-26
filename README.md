@@ -16,6 +16,11 @@ Server (for REST calls): http://ec2-184-72-124-34.compute-1.amazonaws.com:3001/
 - MySQL 5.7.x+
 - Various other node libraries will be installed in the next step
 
+# Install npm
+
+`npm` is used to build and run this project.
+https://docs.npmjs.com/getting-started/installing-node
+
 # Database (MySQL)
 
 ### Note
@@ -63,7 +68,7 @@ The front end should be viewable at:
 
 # REST services
 
-By default, all services are available on <b>port 3001</b>. Example: `http://localhost:3001/widgets`. All responses are in JSON, and expected input is also JSON attached to the body of the request.
+By default, all services are available on <b>port 3001</b>. Example: `http://localhost:3001/widgets`. Responses are in `application/json` `content-type` (or `text/html` in a few cases), and expected input for <b>all</b> requests is `application/json` attached to the body of the request.
 - `/search/widgets/size` Post a search of widgets by size.
   - Example Input `$ curl -H 'Content-Type: application/json' -X POST -d '{"name": "Invisibly Small"}' http://localhost:3001/search/widgets/size`
 - POST `/search/widgets/type` Post a search of widgets by type.
