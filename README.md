@@ -71,18 +71,24 @@ By default, all services are available on <b>port 3001</b>. Example: `http://loc
 - GET `/widgets` Get an array of all widget objects.
   - Example Input `$ curl http://localhost:3001/widgets`
 - POST `/widgets` Post a new widget.
+  - Example Input `$ curl -H 'Content-Type: application/json' -X POST -d '{"name": "New Widget Name", "type": {"id": 1, "name":"Widget"}, "size": {"id": 1, "name": "Invisibly Small"}, "finish": {"id": 1, "name": "green", "colorCode": "#008000"}}' http://localhost:3001/widgets`
 - GET `/orders` Get an array of all order objects.
   - Example Input `$ curl http://localhost:3001/orders`
 - POST `/orders` Post a new order.
+  - Example Input `$ curl -H 'Content-Type: application/json' -X POST -d '{"products":[{"id": 1}]}' http://localhost:3001/orders`
 - PUT `/orders` Update an existing order.
 - DELETE `/orders` Delete an order.
   - Example Input `$ curl -H 'Content-Type: application/json' -X DELETE -d '{"id": 4}' http://localhost:3001/orders`
 - DELETE `/order/product` Delete a product in an order.
   - Example Input `$ curl -H 'Content-Type: application/json' -X DELETE -d '{"orderId": 12, "productId": 25}' http://localhost:3001/order/product`
 - GET `/supported-search-types` Get an array of supported search types.
+  - Example Input `$ curl http://localhost:3001/supported-search-types`
 - GET `/enums/types` Get an array of all type objects.
+  - Example Input `$ curl http://localhost:3001/enums/types`
 - GET `/enums/sizes` Get an array of all size objects.
+  - Example Input `$ curl http://localhost:3001/enums/sizes`
 - GET `/enums/finishes` Get an array of all finish objects.
+  - Example Input `$ curl http://localhost:3001/enums/finishes`
 
 # Future Improvements / Changes
 
