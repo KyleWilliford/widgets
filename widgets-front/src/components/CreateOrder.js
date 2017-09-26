@@ -103,8 +103,10 @@ export default class CreateOrder extends React.Component {
           {selectedProducts.length !== 0 &&
             <div>
               <table id="new-order-table">
+                <thead>
+                  <tr><th>ID</th><th>Name</th><th>Type</th><th>Size</th><th>Finish</th><th>Remove?</th></tr>
+                </thead>
                 <tbody>
-                  <tr><td>ID</td><td>Name</td><td>Type</td><td>Size</td><td>Finish</td><td>Remove?</td></tr>
                   {selectedProducts.map((product) =>
                     <tr key={product.id}>
                       <td>{product.id}</td>

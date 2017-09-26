@@ -2,7 +2,6 @@ import React from 'react';
 import DeleteOrder from './DeleteOrder.js';
 import CreateOrder from './CreateOrder.js';
 import UpdateOrder from './UpdateOrder.js';
-import '../styles/OrderList.css';
 
 /*
 * List of Orders component.
@@ -136,9 +135,11 @@ export default class OrderList extends React.Component {
                       </h6>
                     ) : (
                       <div>
-                        <table id="orders-table">
+                        <table>
+                          <thead>
+                            <tr><th>ID</th><th>Name</th><th>Type</th><th>Size</th><th>Finish</th><th>Remove?</th></tr>
+                          </thead>
                           <tbody>
-                            <tr><td>ID</td><td>Name</td><td>Type</td><td>Size</td><td>Finish</td><td>Remove?</td></tr>
                             {order.products.map((product) =>
                               <tr key={product.id}>
                                 <td>{product.id}</td>

@@ -9,7 +9,7 @@ import CreateWidget from './CreateWidget.js';
 export default class WidgetTable extends React.Component {
   constructor() {
     super();
-    this.state = {widgets: []};
+    this.state = { widgets: [] };
     this.update = this.update.bind(this);
     this.search = this.search.bind(this);
     this.newWidget = this.newWidget.bind(this);
@@ -23,26 +23,32 @@ export default class WidgetTable extends React.Component {
   * Update the table of widgets.
   */
   update() {
-    this.refs.searchWidget.setState({value: ''});
+    this.refs.searchWidget.setState({ value: '' });
     fetch('/widgets')
       .then((res) => res.json())
-      .then((widgets) => this.setState({widgets}));
+      .then((widgets) => this.setState({ widgets }));
   }
 
   /*
-  * Call the backend to search for widgets by some parameterized criteria.
+  * Call the backend to search for widgets by some parameterized criteria (size, type finish, name, etc.).
   */
   search(what, value) {
-    fetch('/search/widgets/' + what, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({name: value}),
-    })
-    .then((res) => res.json())
-    .then((widgets) => this.setState({widgets}));
+    if (!value) {
+      fetch('/widgets')
+      .then((res) => res.json())
+      .then((widgets) => this.setState({ widgets }));
+    } else {
+      fetch('/search/widgets/' + what, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({name: value}),
+      })
+      .then((res) => res.json())
+      .then((widgets) => this.setState({ widgets }));
+    }
   }
 
   /*
@@ -79,8 +85,10 @@ export default class WidgetTable extends React.Component {
             </h3>
           ) : (
             <table id="widget-table">
+              <thead>
+                <tr><th>ID</th><th>Name</th><th>Type</th><th>Size</th><th>Finish</th><th>In Stock?</th></tr>
+              </thead>
               <tbody>
-                <tr><td>ID</td><td>Name</td><td>Type</td><td>Size</td><td>Finish</td><td>In Stock?</td></tr>
                 { widgets.map((widget) =>
                   <tr key={widget.id}><td>{widget.id}</td><td>{widget.name}</td><td>{widget.type.name}</td><td>{widget.size.name}</td><td>{widget.finish.name}</td><td>{widget.inStock ? 'Yes' : 'No'}</td></tr>
                 ) }

@@ -1,4 +1,4 @@
-#widget-table, th, td {
+table, thead, tbody, th, td {
   margin-right: auto;
   border: 1px solid black;
 }

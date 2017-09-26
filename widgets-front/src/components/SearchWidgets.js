@@ -37,11 +37,8 @@ export default class SearchWidgets extends React.Component {
   * Submit button change handler. Submit a search request with the selected search type.
   */
   submitSearch(event) {
-    console.log('A searchValue was submitted: ' + this.state.value);
-    if (this.state.value) {
-      this.props.search(this.state.selectedSearchType, this.state.value);
-    }
     event.preventDefault();
+    this.props.search(this.state.selectedSearchType, this.state.value);
   }
 
   render() {
