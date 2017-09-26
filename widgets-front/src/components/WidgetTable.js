@@ -9,7 +9,7 @@ import CreateWidget from './CreateWidget.js';
 export default class WidgetTable extends React.Component {
   constructor() {
     super();
-    this.state = { widgets: [] };
+    this.state = {widgets: []};
     this.update = this.update.bind(this);
     this.search = this.search.bind(this);
     this.newWidget = this.newWidget.bind(this);
@@ -23,10 +23,10 @@ export default class WidgetTable extends React.Component {
   * Update the table of widgets.
   */
   update() {
-    this.refs.searchWidget.setState({ value: '' });
+    this.refs.searchWidget.setState({value: ''});
     fetch('/widgets')
       .then((res) => res.json())
-      .then((widgets) => this.setState({ widgets }));
+      .then((widgets) => this.setState({widgets}));
   }
 
   /*
@@ -36,7 +36,7 @@ export default class WidgetTable extends React.Component {
     if (!value) {
       fetch('/widgets')
       .then((res) => res.json())
-      .then((widgets) => this.setState({ widgets }));
+      .then((widgets) => this.setState({widgets}));
     } else {
       fetch('/search/widgets/' + what, {
         method: 'POST',
@@ -47,7 +47,7 @@ export default class WidgetTable extends React.Component {
         body: JSON.stringify({name: value}),
       })
       .then((res) => res.json())
-      .then((widgets) => this.setState({ widgets }));
+      .then((widgets) => this.setState({widgets}));
     }
   }
 
@@ -75,7 +75,6 @@ export default class WidgetTable extends React.Component {
         <div>
           <CreateWidget newWidget = {this.newWidget} />
         </div>
-        <br></br>
         <h4>Products Listing</h4>
         <SearchWidgets ref="searchWidget" search = {this.search} />
         <div>
