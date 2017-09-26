@@ -6,22 +6,11 @@ UI: http://ec2-184-72-124-34.compute-1.amazonaws.com:3000/
 Back end (for REST calls): http://ec2-184-72-124-34.compute-1.amazonaws.com:3001/
 
 # Requirements
-npm 5.4.x+
-react-scripts 1.0.x
-node 8.4.x+
-MySQL 5.7.x+
-various node libraries will be installed in the next step
-
-# Install dependencies
-`$ cd widgets`
-
-`$ npm i`
-
-`$ cd widgets-front`
-
-`$ npm i`
-
-`$ npm i react-scripts`
+- npm 5.4.x+
+- react-scripts 1.0.x
+- node 8.4.x+
+- MySQL 5.7.x+
+- Various other node libraries will be installed in the next step
 
 # Database (MySQL)
 
@@ -35,6 +24,17 @@ Run the script provided in the `scripts` directory named `db_setup.sql`. These s
 
 ## Create Schema, Tables, Populate some sample data
 Run the script provided in the `scripts` directory named `populate_tables.sql`. These statements can be run all at once, and some must be run in order.
+
+# Install dependencies
+`$ cd widgets`
+
+`$ npm i`
+
+`$ cd widgets-front`
+
+`$ npm i`
+
+`$ npm i react-scripts`
 
 # Start the backend/Express server
 `$ cd <repo directory>`
