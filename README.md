@@ -104,3 +104,6 @@ By default, all services are available on <b>port 3001</b>. Example: `http://loc
 - Cache enum values on front end after first call
 - Tell the user if their input is invalid or will be truncated
 - Reduce the overall frequency of refresh/update calls on the front end.
+- Support adding new finishes, sizes, types
+- Support adding new attributes for products
+- Bulk operations (bulk update multiple orders, for example)
