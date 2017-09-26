@@ -1,5 +1,8 @@
 import React from 'react';
 
+/*
+* Component to update a current order.
+*/
 export default class UpdateOrder extends React.Component {
   constructor() {
     super()
@@ -7,7 +10,6 @@ export default class UpdateOrder extends React.Component {
     this.update = this.update.bind(this);
     this.productSelectedChange = this.productSelectedChange.bind(this);
     this.addProductToOrder = this.addProductToOrder.bind(this);
-    this.removeProductFromOrder = this.removeProductFromOrder.bind(this);
     this.submitUpdatedOrder = this.submitUpdatedOrder.bind(this);
   }
 
@@ -15,6 +17,9 @@ export default class UpdateOrder extends React.Component {
     this.update();
   }
 
+  /*
+  * Update the list of available products to choose from.
+  */
   update() {
     fetch('/widgets')
       .then(res => res.json())
@@ -29,10 +34,16 @@ export default class UpdateOrder extends React.Component {
       });
   }
 
+  /*
+  * Change handler when a different product is selected from the list.
+  */
   productSelectedChange(event) {
     this.setState({ productId: parseInt(event.target.value, 10) });
   }
 
+  /*
+  * Select a product from the list of available products, and add it to a list of selected products.
+  */
   addProductToOrder() {
     const productId = this.state.productId;
     var availableProducts = this.state.availableProducts;
@@ -51,23 +62,9 @@ export default class UpdateOrder extends React.Component {
     }
   }
 
-  removeProductFromOrder(productId) {
-    var selectedProducts = this.state.selectedProducts;
-    if (selectedProducts.length === 0) return;
-    var availableProducts = this.state.availableProducts;
-    selectedProducts.forEach(function(product, index) {
-      if (product.id === productId) {
-        availableProducts.push(product);
-        selectedProducts.splice(index, 1);
-        return;
-      }
-    });
-    this.forceUpdate();
-    availableProducts.sort(function(a, b) {
-      return b.id - a.id;
-    });
-  }
-
+  /*
+  * Submit button handler for adding a product to an existing order.
+  */
   submitUpdatedOrder() {
     this.addProductToOrder();
     let order = this.props.order;

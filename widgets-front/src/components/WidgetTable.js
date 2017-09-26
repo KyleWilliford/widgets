@@ -3,6 +3,9 @@ import '../styles/WidgetTable.css';
 import SearchWidgets from './SearchWidgets.js';
 import CreateWidget from './CreateWidget.js';
 
+/*
+* Component that will display all widget inventory, and a CreateWidget component and a SearchWidgets component.
+*/
 export default class WidgetTable extends React.Component {
   constructor() {
     super()
@@ -16,6 +19,9 @@ export default class WidgetTable extends React.Component {
     this.update();
   }
 
+  /*
+  * Update the table of widgets.
+  */
   update() {
     this.refs.searchWidget.setState({ value: '' });
     fetch('/widgets')
@@ -23,6 +29,9 @@ export default class WidgetTable extends React.Component {
       .then(widgets => this.setState({ widgets }));
   }
 
+  /*
+  * Call the backend to search for widgets by some parameterized criteria.
+  */
   search(what, value) {
     fetch('/search/widgets/' + what, {
       method: 'POST',
@@ -36,6 +45,9 @@ export default class WidgetTable extends React.Component {
     .then(widgets => this.setState({ widgets }));
   }
 
+  /*
+  * Call the backend to submit a new widget to add to the database.
+  */
   newWidget(widget) {
     fetch('/widgets', {
       method: 'POST',

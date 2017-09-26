@@ -1,5 +1,8 @@
 import React from 'react';
 
+/*
+* Component that can be used to search for widgets.
+*/
 export default class SearchWidgets extends React.Component {
   constructor() {
     super()
@@ -16,14 +19,23 @@ export default class SearchWidgets extends React.Component {
       .then(searchTypes => this.setState({ searchTypes, selectedSearchType: searchTypes[0] }));
   }
 
+  /*
+  * Change handler when a different option is selected from the search type list.
+  */
   selectedSearchTypeChange(event) {
     this.setState({selectedSearchType: event.target.value});
   }
 
+  /*
+  * Change handler when a input is entered in the text input field.
+  */
   textInputChange(event) {
     this.setState({value: event.target.value});
   }
 
+  /*
+  * Submit button change handler. Submit a search request with the selected search type.
+  */
   submitSearch(event) {
     console.log('A searchValue was submitted: ' + this.state.value);
     if (this.state.value) {

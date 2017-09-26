@@ -4,6 +4,9 @@ import CreateOrder from './CreateOrder.js';
 import UpdateOrder from './UpdateOrder.js';
 import '../styles/OrderList.css';
 
+/*
+* List of Orders component.
+*/
 export default class OrderList extends React.Component {
   constructor() {
     super()
@@ -19,6 +22,9 @@ export default class OrderList extends React.Component {
     this.update();
   }
 
+  /*
+  * Update the state of this component - refresh the list of orders.
+  */
   update() {
     fetch('/orders')
       .then(res => res.json())
@@ -33,6 +39,9 @@ export default class OrderList extends React.Component {
       });
   }
 
+  /*
+  * Make a call to delete the order on the back end, and then update the order list.
+  */
   deleteOrder(order) {
     fetch('/orders', {
       method: 'DELETE',
@@ -59,6 +68,9 @@ export default class OrderList extends React.Component {
     });
   }
 
+  /*
+  * Make a call to remove the product from the order in the database, and then update the order list.
+  */
   deleteProductFromOrder(orderId, productId) {
     fetch('/order/product', {
       method: 'DELETE',
@@ -85,6 +97,9 @@ export default class OrderList extends React.Component {
     });
   }
 
+  /*
+  * Make a call to create a new order, and then update the order list.
+  */
   sendOrder(order) {
     fetch('/orders', {
       method: 'POST',
@@ -104,6 +119,9 @@ export default class OrderList extends React.Component {
     });
   }
 
+  /*
+  * Make a call to update an order, and then update the order list.
+  */
   sendUpdatedOrder(order) {
     fetch('/orders', {
       method: 'PUT',
@@ -166,9 +184,9 @@ export default class OrderList extends React.Component {
                             )}
                           </tbody>
                         </table>
-                        <UpdateOrder ref={"updateOrderRef" + order.id} key={order.id} sendUpdatedOrder = {this.sendUpdatedOrder} order = {order} />
                       </div>
                     )}
+                    <UpdateOrder ref={"updateOrderRef" + order.id} key={order.id} sendUpdatedOrder = {this.sendUpdatedOrder} order = {order} />
                 </li>
               )}
             </ul>

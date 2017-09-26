@@ -1,5 +1,8 @@
 import React from 'react';
 
+/*
+* Create a new order component.
+*/
 export default class CreateOrder extends React.Component {
   constructor() {
     super()
@@ -15,6 +18,9 @@ export default class CreateOrder extends React.Component {
     this.update();
   }
 
+  /*
+  * Update the list of available products to choose from.
+  */
   update() {
     fetch('/widgets')
       .then(res => res.json())
@@ -29,10 +35,16 @@ export default class CreateOrder extends React.Component {
       });
   }
 
+  /*
+  * Change handler when a different product is selected from the list.
+  */
   productSelectedChange(event) {
     this.setState({ productId: parseInt(event.target.value, 10) });
   }
 
+  /*
+  * Select a product from the list of available products, and add it to a list of selected products.
+  */
   addProductToOrder() {
     const productId = this.state.productId;
     var availableProducts = this.state.availableProducts;
@@ -51,6 +63,9 @@ export default class CreateOrder extends React.Component {
     }
   }
 
+  /*
+  * Remove a product from the selected product list (the unsubmitted, tenative, order form).
+  */
   removeProductFromOrder(productId) {
     var selectedProducts = this.state.selectedProducts;
     if (selectedProducts.length === 0) return;
@@ -68,6 +83,9 @@ export default class CreateOrder extends React.Component {
     });
   }
 
+  /*
+  * Submit button handler for adding/finalizing a new order.
+  */
   submitNewOrder() {
     const order = {
       products: this.state.selectedProducts

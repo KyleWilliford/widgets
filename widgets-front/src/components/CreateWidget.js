@@ -1,5 +1,8 @@
 import React from 'react';
 
+/*
+* Create new widget component.
+*/
 export default class CreateWidget extends React.Component {
   constructor() {
     super()
@@ -40,22 +43,37 @@ export default class CreateWidget extends React.Component {
       });
   }
 
+  /*
+  * Change handler when a different option is selected from the type dropdown list.
+  */
   typeChange(event) {
     this.setState({ typeId: parseInt(event.target.value, 10) });
   }
 
+  /*
+  * Change handler when a different option is selected from the size dropdown list.
+  */
   sizeChange(event) {
     this.setState({ sizeId: parseInt(event.target.value, 10) });
   }
 
+  /*
+  * Change handler when a different option is selected from the finish dropdown list.
+  */
   finishChange(event) {
     this.setState({ finishId: parseInt(event.target.value, 10) });
   }
 
+  /*
+  * Change handler when a input is entered in the name input field.
+  */
   textInputChange(event) {
     this.setState({ value: event.target.value });
   }
 
+  /*
+  * Submit button change handler. Create a new widget to be added to the database.
+  */
   submitNewWidget(event) {
     let name = this.state.value.substring(0, 64); // name field is constrained to 64 characters
     if(!name) {

@@ -49,5 +49,16 @@ Using forever (default port is 3001):
 
 `$ npm start`
 
-Using forever (default port is 3000) (Not tested):
+Using forever (default port is 3000):
 `forever start -c "npm start" ./`
+
+
+# Future Improvements / Changes
+
+- Change schema/front end to create product instances based on orders, grabbing products from a pool of products, instead of tracking each product individually. Instead of selecting from a list of unique products, select any product from a pool of types of products.
+- Unit tests
+- Integration tests
+- Use connection pooling for database connections
+- Cache enum values on front end after first call
+- Tell the user if their input is invalid or will be truncated
+- Reduce the overall frequency of refresh/update calls on the front end.

@@ -26,7 +26,6 @@ export default class App extends Component {
       <div className="App">
         <div className="App-header">
           <h2>Welcome to... some place that sells Widgets</h2>
-          <h4>We apologize about the poor presentation of this site. We are hard at work hiring men with shovels to fill in the holes.</h4>
         </div>
         <div className="pad-left">
           <div>
