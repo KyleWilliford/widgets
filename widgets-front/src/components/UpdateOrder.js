@@ -21,17 +21,8 @@ export default class UpdateOrder extends React.Component {
   * Update the list of available products to choose from.
   */
   update() {
-    fetch('/widgets')
-      .then(res => res.json())
-      .then(widgets => {
-        var availableProducts = widgets.filter(function(widget) {
-          return widget.inStock;
-        });
-        this.setState({ availableProducts : availableProducts });
-        if (availableProducts.length > 0) {
-          this.setState({ productId: availableProducts[0].id });
-        }
-      });
+    this.setState({ availableProducts : this.props.products,
+      productId: this.props.products[0] ? this.props.products[0].id : -1 });
   }
 
   /*
