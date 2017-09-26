@@ -76,17 +76,12 @@ function getAllOrders(req, res, next) {
     , function(error, results, fields) {
       if (error) deferred.reject(error);
       results.forEach(function(result) {
-        console.log(result);
         const size = new Size(result.sizeId, result.sizeName);
-        console.log(size);
         const finish = new Finish(result.finishId, result.finishName,
           result.finishHexCode);
-        console.log(finish);
         const type = new WidgetType(result.typeId, result.typeName);
-        console.log(type);
         const widget = WidgetFactory.createWidget(result.productId,
           size, finish, result.productName, type, result.inStock);
-        console.log(widget);
         if (orders.length === 0) return;
         orders.forEach(function(order) {
           if (order.id === result.orderId) {
@@ -94,7 +89,6 @@ function getAllOrders(req, res, next) {
           }
         });
       });
-      console.log(orders);
       deferred.resolve();
     });
     return deferred.promise;
@@ -118,8 +112,8 @@ function getAllOrders(req, res, next) {
 * @param {function} next The next function to call in the middleware chain.
 */
 function updateOrder(req, res, next) {
-  console.log(req.body);
   let order = req.body;
+  console.log(order);
   let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let currentProductIds = [];
@@ -287,8 +281,8 @@ function updateOrder(req, res, next) {
 * @param {function} next The next function to call in the middleware chain.
 */
 function createOrder(req, res, next) {
-  console.log(req.body);
   let order = req.body;
+  console.log(order);
   let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   let currentProductIds = [];
@@ -441,6 +435,28 @@ function deleteOrder(req, res, next) {
   let order = req.body;
   let connection = mysql.createConnection(config.getConnectionConfigObject());
 
+  let currentProductIds = [];
+  /**
+  * Select the products for an order where the order id matches a given id.
+  * @return {object} A Q promise.
+  */
+  function getCurrentOrderProducts() {
+    let deferred = Q.defer();
+    connection.query(
+      `SELECT p.id 
+      FROM product p 
+      INNER JOIN order_inventory oi ON oi.product_id = p.id 
+      WHERE oi.order_id = ${SqlString.escape(order.id)};`
+      , function(error, results, fields) {
+        if (error) deferred.reject(error);
+        results.forEach(function(result) {
+          currentProductIds.push(result.id);
+        });
+      deferred.resolve();
+    });
+    return deferred.promise;
+  }
+
   /**
   * Delete all products from the order.
   * @return {object} A Q promise.
@@ -478,12 +494,12 @@ function deleteOrder(req, res, next) {
   * @return {object} A Q promise.
   */
   function resetStock() {
-    if (!order || !order.products || order.products.length === 0) return;
+    if (currentProductIds.length === 0) return;
     let deferred = Q.defer();
-    order.products.forEach(function(product) {
+    currentProductIds.forEach(function(productId) {
       connection.query(
         `UPDATE product SET in_stock = true 
-        WHERE id = ${SqlString.escape(product.id)};`
+        WHERE id = ${SqlString.escape(productId)};`
         , function(error, results, fields) {
         if (error) deferred.reject(error);
         deferred.resolve();
@@ -492,7 +508,8 @@ function deleteOrder(req, res, next) {
     return deferred.promise;
   }
 
-  Q.fcall(deleteOrderInventory)
+  Q.fcall(getCurrentOrderProducts)
+    .then(deleteOrderInventory)
     .then(deleteCustomerOrder)
     .then(resetStock)
     .catch(function(error) {
@@ -512,9 +529,8 @@ function deleteOrder(req, res, next) {
 */
 function deleteProductFromOrder(req, res, next) {
   let orderId = SqlString.escape(req.body.orderId);
-  console.log('orderId ' + orderId);
   let productId = SqlString.escape(req.body.productId);
-  console.log('productId ' + productId);
+  console.log(`delete product with id ${productId} from order with id ${orderId}`);
   let connection = mysql.createConnection(config.getConnectionConfigObject());
 
   /**

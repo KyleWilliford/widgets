@@ -44,17 +44,11 @@ function getAllWidgets(req, res, next) {
     INNER JOIN size s ON p.size_id = s.id
     ORDER BY productId DESC;`, function(error, results, fields) {
       if (error) deferred.reject(error);
-      console.log(results);
       results.forEach(function(result) {
-        console.log(result);
         const size = new Size(result.sizeId, result.sizeName);
-        console.log(size);
         const finish = new Finish(result.finishId, result.finishName, result.finishHexCode);
-        console.log(finish);
         const type = new WidgetType(result.typeId, result.typeName);
-        console.log(type);
         const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName, type, result.inStock);
-        console.log(widget);
         if (widget) widgets.push(widget);
       });
       deferred.resolve();
@@ -161,17 +155,11 @@ function getWidgetsBySize(req, res, next) {
     createSearchQueryString('s.name', name)
     , function(error, results, fields) {
       if (error) deferred.reject(error);
-      console.log(results);
       results.forEach(function(result) {
-        console.log(result);
         const size = new Size(result.sizeId, result.sizeName);
-        console.log(size);
         const finish = new Finish(result.finishId, result.finishName, result.finishHexCode);
-        console.log(finish);
         const type = new WidgetType(result.typeId, result.typeName);
-        console.log(type);
         const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName, type, result.inStock);
-        console.log(widget);
         if (widget) widgets.push(widget);
       });
       deferred.resolve();
@@ -211,17 +199,11 @@ function getWidgetsByType(req, res, next) {
     createSearchQueryString('t.name', name)
     , function(error, results, fields) {
       if (error) deferred.reject(error);
-      console.log(results);
       results.forEach(function(result) {
-        console.log(result);
         const size = new Size(result.sizeId, result.sizeName);
-        console.log(size);
         const finish = new Finish(result.finishId, result.finishName, result.finishHexCode);
-        console.log(finish);
         const type = new WidgetType(result.typeId, result.typeName);
-        console.log(type);
         const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName, type, result.inStock);
-        console.log(widget);
         if (widget) widgets.push(widget);
       });
       deferred.resolve();
@@ -261,17 +243,11 @@ function getWidgetsByFinish(req, res, next) {
     createSearchQueryString('f.name', name)
     , function(error, results, fields) {
       if (error) deferred.reject(error);
-      console.log(results);
       results.forEach(function(result) {
-        console.log(result);
         const size = new Size(result.sizeId, result.sizeName);
-        console.log(size);
         const finish = new Finish(result.finishId, result.finishName, result.finishHexCode);
-        console.log(finish);
         const type = new WidgetType(result.typeId, result.typeName);
-        console.log(type);
         const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName, type, result.inStock);
-        console.log(widget);
         if (widget) widgets.push(widget);
       });
       deferred.resolve();
@@ -311,17 +287,11 @@ function getWidgetsByName(req, res, next) {
     createSearchQueryString('p.name', name)
     , function(error, results, fields) {
       if (error) deferred.reject(error);
-      console.log(results);
       results.forEach(function(result) {
-        console.log(result);
         const size = new Size(result.sizeId, result.sizeName);
-        console.log(size);
         const finish = new Finish(result.finishId, result.finishName, result.finishHexCode);
-        console.log(finish);
         const type = new WidgetType(result.typeId, result.typeName);
-        console.log(type);
         const widget = WidgetFactory.createWidget(result.productId, size, finish, result.productName, type, result.inStock);
-        console.log(widget);
         if (widget) widgets.push(widget);
       });
       deferred.resolve();
