@@ -5,8 +5,8 @@ import React from 'react';
 */
 export default class UpdateOrder extends React.Component {
   constructor() {
-    super()
-    this.state = { availableProducts: [], productId: -1, selectedProducts: [] };
+    super();
+    this.state = {availableProducts: [], productId: -1, selectedProducts: []};
     this.update = this.update.bind(this);
     this.productSelectedChange = this.productSelectedChange.bind(this);
     this.addProductToOrder = this.addProductToOrder.bind(this);
@@ -21,15 +21,15 @@ export default class UpdateOrder extends React.Component {
   * Update the list of available products to choose from.
   */
   update() {
-    this.setState({ availableProducts : this.props.products,
-      productId: this.props.products[0] ? this.props.products[0].id : -1 });
+    this.setState({availableProducts: this.props.products,
+      productId: this.props.products[0] ? this.props.products[0].id : -1});
   }
 
   /*
   * Change handler when a different product is selected from the list.
   */
   productSelectedChange(event) {
-    this.setState({ productId: parseInt(event.target.value, 10) });
+    this.setState({productId: parseInt(event.target.value, 10)});
   }
 
   /*
@@ -37,9 +37,9 @@ export default class UpdateOrder extends React.Component {
   */
   addProductToOrder() {
     const productId = this.state.productId;
-    var availableProducts = this.state.availableProducts;
+    let availableProducts = this.state.availableProducts;
     if (availableProducts.length === 0) return;
-    var selectedProducts = this.state.selectedProducts;
+    let selectedProducts = this.state.selectedProducts;
     availableProducts.forEach(function(product, index) {
       if (product.id === productId) {
         selectedProducts.push(product);
@@ -49,7 +49,7 @@ export default class UpdateOrder extends React.Component {
     });
     this.forceUpdate();
     if (availableProducts.length > 0) {
-      this.setState({ productId: availableProducts[0].id });
+      this.setState({productId: availableProducts[0].id});
     }
   }
 
@@ -61,7 +61,7 @@ export default class UpdateOrder extends React.Component {
     let order = this.props.order;
     order.products = order.products.concat(this.state.selectedProducts);
     this.props.sendUpdatedOrder(order);
-    this.setState({ selectedProducts: [] });
+    this.setState({selectedProducts: []});
     this.forceUpdate();
   }
 
@@ -71,7 +71,7 @@ export default class UpdateOrder extends React.Component {
       <div><h5>Update This Order</h5>
         <span className="margin-5px">Choose a product to add to the order:</span>
         <select className="margin-5px" onChange={this.productSelectedChange} value={this.state.productId}>
-          {availableProducts.map(product =>
+          {availableProducts.map((product) =>
             <option key={product.id} value={product.id}>id:{product.id} {product.name} {product.size.name} {product.finish.name} {product.type.name}</option>
           )}
         </select>

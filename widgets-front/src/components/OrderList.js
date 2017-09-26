@@ -9,8 +9,8 @@ import '../styles/OrderList.css';
 */
 export default class OrderList extends React.Component {
   constructor() {
-    super()
-    this.state = { orders: [], products: [] };
+    super();
+    this.state = {orders: [], products: []};
     this.update = this.update.bind(this);
     this.deleteOrder = this.deleteOrder.bind(this);
     this.deleteProductFromOrder = this.deleteProductFromOrder.bind(this);
@@ -27,26 +27,26 @@ export default class OrderList extends React.Component {
   */
   update() {
     fetch('/orders')
-      .then(res => res.json())
-      .then(orders => this.setState({ orders }))
-      .then(response => this.refs.createOrderRef.update())
-      .then(response => {
+      .then((res) => res.json())
+      .then((orders) => this.setState({orders}))
+      .then((response) => this.refs.createOrderRef.update())
+      .then((response) => {
         fetch('/widgets')
-          .then(res => res.json())
-          .then(widgets => {
-            var availableProducts = widgets.filter(function(widget) {
+          .then((res) => res.json())
+          .then((widgets) => {
+            let availableProducts = widgets.filter(function(widget) {
               return widget.inStock;
             });
-            this.setState({ products: availableProducts });
-            Object.keys(this.refs).forEach(updateOrderRef => {
-              if(updateOrderRef !== 'self') {
+            this.setState({products: availableProducts});
+            Object.keys(this.refs).forEach((updateOrderRef) => {
+              if (updateOrderRef !== 'self') {
               this.refs[updateOrderRef].update();
                }
             });
           })
-          .then(response => this.refs.createOrderRef.update());
+          .then((response) => this.refs.createOrderRef.update());
       })
-      .then(response => this.props.ordersChanged());
+      .then((response) => this.props.ordersChanged());
   }
 
   /*
@@ -59,9 +59,9 @@ export default class OrderList extends React.Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(order)
+      body: JSON.stringify(order),
     })
-    .then(response => this.update());
+    .then((response) => this.update());
   }
 
   /*
@@ -74,9 +74,9 @@ export default class OrderList extends React.Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ orderId: orderId, productId: productId })
+      body: JSON.stringify({orderId: orderId, productId: productId}),
     })
-    .then(response => this.update());
+    .then((response) => this.update());
   }
 
   /*
@@ -89,9 +89,9 @@ export default class OrderList extends React.Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(order)
+      body: JSON.stringify(order),
     })
-    .then(response => this.update());
+    .then((response) => this.update());
   }
 
   /*
@@ -104,13 +104,13 @@ export default class OrderList extends React.Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(order)
+      body: JSON.stringify(order),
     })
-    .then(response => this.update());
+    .then((response) => this.update());
   }
 
   render() {
-    const { orders } = this.state;
+    const {orders} = this.state;
     return (
       <div className="component-pad">
         <h1>Product Orders</h1>
@@ -125,7 +125,7 @@ export default class OrderList extends React.Component {
             </h3>
           ) : (
             <ul>
-              {orders.map(order =>
+              {orders.map((order) =>
                 <li key={order.id}>
                   <span>Order with id {order.id} placed at {order.orderDate}</span>
                   <DeleteOrder deleteOrder = {this.deleteOrder} order = {order} />
@@ -139,7 +139,7 @@ export default class OrderList extends React.Component {
                         <table id="orders-table">
                           <tbody>
                             <tr><td>ID</td><td>Name</td><td>Type</td><td>Size</td><td>Finish</td><td>Remove?</td></tr>
-                            {order.products.map(product =>
+                            {order.products.map((product) =>
                               <tr key={product.id}>
                                 <td>{product.id}</td>
                                 <td>{product.name}</td>
@@ -153,7 +153,7 @@ export default class OrderList extends React.Component {
                         </table>
                       </div>
                     )}
-                    <UpdateOrder ref={"updateOrderRef" + order.id} key={order.id} sendUpdatedOrder = {this.sendUpdatedOrder}
+                    <UpdateOrder ref={'updateOrderRef' + order.id} key={order.id} sendUpdatedOrder = {this.sendUpdatedOrder}
                       order = {order} products = {this.state.products} />
                 </li>
               )}

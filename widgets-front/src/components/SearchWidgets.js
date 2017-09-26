@@ -5,8 +5,8 @@ import React from 'react';
 */
 export default class SearchWidgets extends React.Component {
   constructor() {
-    super()
-    this.state = { searchTypes: [], selectedSearchType: '', value: '' };
+    super();
+    this.state = {searchTypes: [], selectedSearchType: '', value: ''};
 
     this.selectedSearchTypeChange = this.selectedSearchTypeChange.bind(this);
     this.textInputChange = this.textInputChange.bind(this);
@@ -15,8 +15,8 @@ export default class SearchWidgets extends React.Component {
 
   componentDidMount() {
     fetch('/supported-search-types')
-      .then(res => res.json())
-      .then(searchTypes => this.setState({ searchTypes, selectedSearchType: searchTypes[0] }));
+      .then((res) => res.json())
+      .then((searchTypes) => this.setState({searchTypes, selectedSearchType: searchTypes[0]}));
   }
 
   /*
@@ -49,7 +49,7 @@ export default class SearchWidgets extends React.Component {
     return (
       <form onSubmit={this.submitSearch}>
         <label>
-          Search by: 
+          Search by:
           <select className="margin-5px" onChange={this.selectedSearchTypeChange} value={this.state.selectedSearchType}>
             {searchTypes.map((searchType, index) =>
               <option key={index} value={searchType}>{searchType}</option>

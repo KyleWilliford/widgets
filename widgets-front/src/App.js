@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import WidgetTable from './components/WidgetTable.js';
 import OrderList from './components/OrderList.js';
 import './App.css';
 
 export default class App extends Component {
   constructor() {
-    super()
+    super();
     this.ordersChanged = this.ordersChanged.bind(this);
     this.widgetsChanged = this.widgetsChanged.bind(this);
   }
