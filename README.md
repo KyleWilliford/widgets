@@ -77,6 +77,7 @@ By default, all services are available on <b>port 3001</b>. Example: `http://loc
 - POST `/orders` Post a new order.
   - Example Input `$ curl -H 'Content-Type: application/json' -X POST -d '{"products":[{"id": 1}]}' http://localhost:3001/orders`
 - PUT `/orders` Update an existing order.
+  - Example Input (Replaces all products in order 17 with one product that has id 27) `$ curl -H 'Content-Type: application/json' -X PUT -d '{"id": 17, "products": [{"id": 27}]}' http://localhost:3001/orders`
 - DELETE `/orders` Delete an order.
   - Example Input `$ curl -H 'Content-Type: application/json' -X DELETE -d '{"id": 4}' http://localhost:3001/orders`
 - DELETE `/order/product` Delete a product in an order.
