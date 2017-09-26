@@ -118,3 +118,4 @@ By default, all services are available on <b>port 3001</b>. Example: `http://loc
 - Support adding new finishes, sizes, types
 - Support adding new attributes for products
 - Bulk operations (bulk update multiple orders, for example)
+- Encrypt or scramble database passwords so they don't show up here in Github in plaintext
