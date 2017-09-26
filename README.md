@@ -1,6 +1,6 @@
 # Widgets React / Express Sample App
 
-## Browser Support
+# Browser Support
 
 This application has only been tested with Chrome Version 61.0.3163.100 (Official Build) (64-bit)
 
@@ -16,23 +16,29 @@ Server (for REST calls): http://ec2-184-72-124-34.compute-1.amazonaws.com:3001/
 - MySQL 5.7.x+
 - Various other node libraries will be installed in the next step
 
-# Install npm
+## Install npm
 
 `npm` is used to build and run this project.
 https://docs.npmjs.com/getting-started/installing-node
 
 # Database (MySQL)
 
-### Note
+## Note
 The following scripts have not been tested with SQL servers other than MySQL Server 5.7.x
 
 ## Setup
 Install mysql-server. This will vary depending on the environment. Refer to https://dev.mysql.com/doc/refman/5.7/en/installing.html for more information.
 
-Run the script provided in the `scripts` directory named `db_setup.sql`. These statements can be run all at once, but must be run in order.
+<b>Make note of the root password that you set while installing the server.</b> You will need it in the following steps.
 
-## Create Schema, Tables, Populate some sample data
-Run the script provided in the `scripts` directory named `populate_tables.sql`. These statements can be run all at once, and some must be run in order.
+### After MySQL Server Installation
+
+`$ mysql -u root -p` will prompt for a password. This is the root password you used while installing the server.
+
+Run the script provided in `widgets/scripts/db_setup.sql`. These statements can be run all at once (by copying and pasting to the command line, executing the file in the database, etc.), but <b>these must be run in their provided order</b>.
+
+#### Create Schema, Tables, Populate some sample data
+Run the script provided in `widgets/scripts/populate_tables.sql`. These statements can be run all at once (by copying and pasting to the command line, executing the file in the database, etc.), and some statements must be run in their provided order.
 
 # Install dependencies
 `$ cd widgets`
@@ -48,18 +54,18 @@ Run the script provided in the `scripts` directory named `populate_tables.sql`. 
 # Start the backend/Express server
 `$ cd <repo directory>`
 
-`$ PORT=<desired port number> node bin/www`
+`$ PORT=<desired port number> node bin/www` or `$ node bin/www` using default port 3001
 
-Using forever (default port is 3001):
-`$ forever start bin/www`
+Using forever to run as a background process:
+`$ forever start bin/www` (should be run from the `widgets` directory/directory that has this README)
 
 # Start the front end/React app (dev mode)
 `$ cd <repo directory>/widgets-front`
 
 `$ npm start`
 
-Using forever (default port is 3000):
-`$ forever start -c "npm start" ./`
+Using forever to run as a background process:
+`$ forever start -c "npm start" ./` (should be run from the `widgets-front` directory)
 
 # Web site
 The front end should be viewable at:
