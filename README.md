@@ -5,9 +5,9 @@
 This application has only been tested with Chrome Version 61.0.3163.100 (Official Build) (64-bit)
 
 # Live Site
-Website: http://ec2-184-72-124-34.compute-1.amazonaws.com:3000/
+~Website: http://ec2-184-72-124-34.compute-1.amazonaws.com:3000/~ (Offline)
 
-Server (for REST calls): http://ec2-184-72-124-34.compute-1.amazonaws.com:3001/
+~Server (for REST calls): http://ec2-184-72-124-34.compute-1.amazonaws.com:3001/~ (Offline)
 
 # Requirements
 - npm 5.4.x+
